@@ -70,44 +70,54 @@ void Send_Dash()//To_Controller()
 {
 
 
-  float[] toSend = new float[6];
+  float[] toSend = new float[4];
   toSend[0] = float(SPField.getText());
-  toSend[1] = float(InField.getText());
+  toSend[1] = float(SP2Field.getText());
   toSend[2] = float(OutField.getText());
-  toSend[0] = float(SP2Field.getText());
-  toSend[1] = float(In2Field.getText());
-  toSend[2] = float(Out2Field.getText());
+  toSend[3] = float(Out2Field.getText());
 
   Byte a = (AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
-  byte identifier = 1;
+  Byte b = (AM2Label.valueLabel().getText()=="Manual")?(byte)0:(byte):1;
+  byte identifier = 0;
   myPort.write(identifier);
   myPort.write(a);
+  myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
 } 
 
 void Send_Tunings()
 {
-  float[] toSend = new float[3];
-  Byte d = (DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  float[] toSend = new float[6];
+  Byte a = (DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  Byte b = (DR2Label.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
   toSend[0] = float(PField.getText());
-  toSend[1] = float(IField.getText());
-  toSend[2] = float(DField.getText());
-  byte identifier = 2;
+  toSend[1] = float(PField.getText());
+  toSend[2] = float(IField.getText());
+  toSend[3] = float(IField.getText());
+  toSend[4] = float(DField.getText());
+  toSend[5] = float(DField.getText());
+  byte identifier = 1;
   myPort.write(identifier);
-  myPort.write(d);
+  myPort.write(a);
+  myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
 }
 
 void Send_Auto_Tune()
 {
-  float[] toSend = new float[3];
-  Byte d = (ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  float[] toSend = new float[6];
+  Byte a = (ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  Byte b = (AT2Label.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
   toSend[0] = float(oSField.getText());
-  toSend[1] = float(nField.getText());
-  toSend[2] = float(lbField.getText());
-  byte identifier = 3;
+  toSend[1] = float(oSField.getText());
+  toSend[2] = float(nField.getText());
+  toSend[3] = float(nField.getText());
+  toSend[4] = float(lbField.getText());
+  toSend[5] = float(lbField.getText());
+  byte identifier = 2;
   myPort.write(identifier);
-  myPort.write(d);
+  myPort.write(a);
+  myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
 }
 
@@ -135,41 +145,43 @@ void Send_Configuration()//To_Controller()
 void Run_Profile()
 {
 
-  byte[] toSend = new byte[2];
-  toSend[0]=8;
-  toSend[1]=1;
-  myPort.write(toSend);
+  identifier = 6
+  byte a = 1
+  byte b = 1
+  myPort.write(identifier);
+  myPort.write(a);
+  myPort.write(b);
 }
 void Stop_Profile()
 {
-  byte[] toSend = new byte[2];
-  toSend[0]=8;
-  toSend[1]=0;
-  myPort.write(toSend);
+  identifier = 6
+  byte a = 0
+  byte b = 0
+  myPort.write(identifier);
+  myPort.write(a);
+  myPort.write(b);
 }
 
 void Send_Profile()
 {
   currentxferStep=0;
+  byte identifier=4;
+  byte a=15;
+  myPort.write(identifier);
+  myPort.write(a);
+  myPort.write(currentxferStep);
   SendProfileStep(byte(currentxferStep));
 }
 int currentxferStep=-1;
 
 void SendProfileStep(byte step)
 {
-  byte identifier=7;
   Profile p = profs[curProf];
-  float[] temp = new float[2];
-  temp[0] = p.vals[step];
-  temp[1] = p.times[step];
-
-  byte[] toSend = new byte[11];
-  toSend[0]=identifier;
-  toSend[1]=step;
-  toSend[2]=p.types[step];
-  arraycopy(floatArrayToByteArray(temp),0,toSend,3,8);
+  float[] toSend = new float[2];
+  toSend[0] = p.vals[step];
+  toSend[1] = p.times[step];
+  arraycopy(floatArrayToByteArray(toSend));
   myPort.write(toSend);
-
 }
 
 void SendProfileName()
@@ -197,9 +209,10 @@ void SendProfileName()
 
 void Reset_Factory_Defaults()
 {
-  byte identifier = 4;
+  byte identifier = 3;
   myPort.write(identifier);
-  myPort.write((byte)1); 
+  myPort.write((byte)9);
+  myPort.write((byte)8); 
 }
 
 byte[] floatArrayToByteArray(float[] input)
