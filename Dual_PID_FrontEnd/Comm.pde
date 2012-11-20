@@ -70,10 +70,13 @@ void Send_Dash()//To_Controller()
 {
 
 
-  float[] toSend = new float[3];
+  float[] toSend = new float[6];
   toSend[0] = float(SPField.getText());
   toSend[1] = float(InField.getText());
   toSend[2] = float(OutField.getText());
+  toSend[0] = float(SP2Field.getText());
+  toSend[1] = float(In2Field.getText());
+  toSend[2] = float(Out2Field.getText());
 
   Byte a = (AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
   byte identifier = 1;
