@@ -52,8 +52,6 @@ void Disconnect()
     DisconnectButton.setVisible(false);
     commconfigLabel1.setVisible(true);
     commconfigLabel2.setVisible(true);
-    ClearInput();
-    ClearOutput();
     Nullify();
   } 
 }
@@ -76,8 +74,10 @@ void Send_Dash()//To_Controller()
   toSend[2] = float(OutField.getText());
   toSend[3] = float(Out2Field.getText());
 
-  Byte a = (AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
-  Byte b = (AM2Label.valueLabel().getText()=="Manual")?(byte)0:(byte):1;
+
+
+  byte a = (AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  byte b = (AM2Label.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
   byte identifier = 0;
   myPort.write(identifier);
   myPort.write(a);
@@ -88,8 +88,8 @@ void Send_Dash()//To_Controller()
 void Send_Tunings()
 {
   float[] toSend = new float[6];
-  Byte a = (DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
-  Byte b = (DR2Label.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  byte a = (DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  byte b = (DR2Label.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
   toSend[0] = float(PField.getText());
   toSend[1] = float(PField.getText());
   toSend[2] = float(IField.getText());
@@ -106,8 +106,8 @@ void Send_Tunings()
 void Send_Auto_Tune()
 {
   float[] toSend = new float[6];
-  Byte a = (ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
-  Byte b = (AT2Label.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  byte a = (ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  byte b = (AT2Label.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
   toSend[0] = float(oSField.getText());
   toSend[1] = float(oSField.getText());
   toSend[2] = float(nField.getText());
@@ -130,7 +130,7 @@ void Send_Configuration()//To_Controller()
   toSend[2] = float(T0Field.getText());
   toSend[3] = float(oSecField.getText());
 
-  Byte a =0;
+  byte a =0;
   if(r2.getState(1)==true)a=1;
   else if(r2.getState(2)==true)a=2;
 
@@ -145,18 +145,18 @@ void Send_Configuration()//To_Controller()
 void Run_Profile()
 {
 
-  identifier = 6
-  byte a = 1
-  byte b = 1
+  byte identifier = 6;
+  byte a = 1;
+  byte b = 1;
   myPort.write(identifier);
   myPort.write(a);
   myPort.write(b);
 }
 void Stop_Profile()
 {
-  identifier = 6
-  byte a = 0
-  byte b = 0
+  byte identifier = 6;
+  byte a = 0;
+  byte b = 0;
   myPort.write(identifier);
   myPort.write(a);
   myPort.write(b);
@@ -180,8 +180,7 @@ void SendProfileStep(byte step)
   float[] toSend = new float[2];
   toSend[0] = p.vals[step];
   toSend[1] = p.times[step];
-  arraycopy(floatArrayToByteArray(toSend));
-  myPort.write(toSend);
+  myPort.write(floatArrayToByteArray(toSend));
 }
 
 void SendProfileName()
@@ -209,7 +208,7 @@ void SendProfileName()
 
 void Reset_Factory_Defaults()
 {
-  byte identifier = 3;
+  Byte identifier = 3;
   myPort.write(identifier);
   myPort.write((byte)9);
   myPort.write((byte)8); 
@@ -274,8 +273,6 @@ void serialEvent(Serial myPort)
 
   if(s.length==4 && s[0].equals("osPID"))
   {
-    if(InputCard=="" || !InputCard.equals(trim(s[2]))) InputCreateReq=trim(s[2]);
-    if(OutputCard=="" || !OutputCard.equals(trim(s[3]))) OutputCreateReq=trim(s[3]);
     ConnectButton.setVisible(false);
     Connecting.setVisible(false);
     DisconnectButton.setVisible(true);
@@ -328,14 +325,6 @@ void serialEvent(Serial myPort)
       ATLabel.setValue(int(s[5])==1? "ON" : "OFF");
     }
 
-  }
-  else if(s[0].equals("IPT") && InputCard != null)
-  {
-    PopulateCardFields(InputCard, s);
-  }
-  else if(s[0].equals("OPT") && OutputCard != null)  
-  {
-    PopulateCardFields(OutputCard, s);
   }
   else if( s.length>3 && s[0].equals("PROF"))
   {

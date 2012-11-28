@@ -48,7 +48,7 @@ void populateDashTab()
   CommPorts = Serial.list();
   for(int i=0;i<CommPorts.length;i++)
   {
-    addToRadioButton(r1,CommPorts[i],i); 
+    r1.addItem(CommPorts[i],i); 
   }
   if(CommPorts.length>0) r1.getItem(0).setState(true);
   commH = 27+12*CommPorts.length;

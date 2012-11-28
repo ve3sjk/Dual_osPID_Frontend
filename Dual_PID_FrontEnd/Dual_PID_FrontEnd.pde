@@ -139,17 +139,6 @@ void setup()
 
 void draw()
 {
-  if(InputCreateReq!="" && InputCard!= InputCreateReq)
-  {
-    CreateUI(InputCreateReq, "Tab2",configTop);
-    InputCreateReq="";
-  }
-  if(OutputCreateReq!="" && OutputCard!= OutputCreateReq)
-  {
-    CreateUI(OutputCreateReq,"Tab2",configTop+configH+15);
-    OutputCreateReq="";
-  }
-
   ProfileRunTime();
 
   background(200);
