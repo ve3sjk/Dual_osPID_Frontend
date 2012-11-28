@@ -72,7 +72,7 @@ String pHold="", iHold="", dHold="";
 PrintWriter output;
 PFont AxisFont, TitleFont, ProfileFont; 
 
-int dashTop = 200, dashLeft = 10, dashW=160, dashH=180; 
+int dashTop = 200, dashLeft = 10, dashW=160, dashH=380; 
 int tuneTop = 30, tuneLeft = 10, tuneW=160, tuneH=180;
 int ATTop = 230, ATLeft = 10, ATW=160, ATH=180;
 int commTop = 30, commLeft = 10, commW=160, commH=180; 
@@ -110,7 +110,7 @@ void setup()
 
   PrefsToVals(); //read pref array into global variables
 
-    String curDir = System.getProperty("user.dir");
+    String curDir = sketchPath;
   ReadProfiles(curDir+ File.separator + "profiles");
 
 

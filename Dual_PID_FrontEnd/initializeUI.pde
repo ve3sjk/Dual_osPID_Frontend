@@ -65,31 +65,31 @@ void populateDashTab()
   InField = controlP5.addTextfield("Input",dashLeft,dashTop+80,60,20);           //   Text Fields we'll be
   OutField = controlP5.addTextfield("Output",dashLeft,dashTop+120,60,20);         //   using
   
-  AM2Button = controlP5.addButton("Toggle_AM 2",0.0,dashLeft,dashTop,60,20);      //
-  AM2Label = controlP5.addTextlabel("AM","Manual",dashLeft+2,dashTop+22);            //
-  SP2Field = controlP5.addTextfield("Setpoint 2",dashLeft,dashTop+40,60,20);         //   Buttons, Labels, and
-  In2Field = controlP5.addTextfield("Input 2",dashLeft,dashTop+80,60,20);           //   Text Fields we'll be
-  Out2Field = controlP5.addTextfield("Output 2",dashLeft,dashTop+120,60,20);         //   using
+  AM2Button = controlP5.addButton("Toggle_AM 2",0.0,dashLeft,dashTop+160,60,20);      //
+  AM2Label = controlP5.addTextlabel("AM","Manual",dashLeft+2,dashTop+182);            //
+  SP2Field = controlP5.addTextfield("Setpoint 2",dashLeft,dashTop+220,60,20);         //   Buttons, Labels, and
+  In2Field = controlP5.addTextfield("Input 2",dashLeft,dashTop+260,60,20);           //   Text Fields we'll be
+  Out2Field = controlP5.addTextfield("Output 2",dashLeft,dashTop+300,60,20);         //   using
 
   AMCurrent = controlP5.addTextlabel("AMCurrent","Manual",dashLeft+70,dashTop+15);   //
   SPLabel = controlP5.addTextlabel("SP","3",dashLeft+70,dashTop+43);                  //
   InLabel = controlP5.addTextlabel("In","1",dashLeft+70,dashTop+83);                  //
   OutLabel = controlP5.addTextlabel("Out","2",dashLeft+70,dashTop+123);                // 
-  AM2Current = controlP5.addTextlabel("AMCurrent","Manual",dashLeft+70,dashTop+15);   //
-  SP2Label = controlP5.addTextlabel("SP","3",dashLeft+70,dashTop+43);                  //
-  In2Label = controlP5.addTextlabel("In","1",dashLeft+70,dashTop+83);                  //
-  Out2Label = controlP5.addTextlabel("Out","2",dashLeft+70,dashTop+123);                // 
-  controlP5.addButton("Send_Dash",0.0,dashLeft,dashTop+160,160,20);         //
+  AM2Current = controlP5.addTextlabel("AMCurrent","Manual",dashLeft+70,dashTop+165);   //
+  SP2Label = controlP5.addTextlabel("SP","3",dashLeft+70,dashTop+223);                  //
+  In2Label = controlP5.addTextlabel("In","1",dashLeft+70,dashTop+263);                  //
+  Out2Label = controlP5.addTextlabel("Out","2",dashLeft+70,dashTop+303);                // 
+  controlP5.addButton("Send_Dash",0.0,dashLeft,dashTop+340,160,20);         //
   
 
 
   
   
   int dashStatTop = configTop+490;
-  for(int i=0;i<6;i++)
- { 
-   controlP5.addTextlabel("dashstat"+i, "", configLeft, dashStatTop+12*i+5);
- }
+  for(int i=0;i<12;i++)
+  { 
+    controlP5.addTextlabel("dashstat"+i, "", configLeft, dashStatTop+12*i+5);
+  }
   controlP5.addTextlabel("dashstatus", "Status", configLeft+9, dashStatTop-8);
 }
 
