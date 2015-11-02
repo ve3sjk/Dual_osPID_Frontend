@@ -331,6 +331,9 @@ void serialEvent(Serial myPort)
   }
   else if(s.length==17 && s[0].equals("TUNE"))
   {
+   
+    //PID 001
+   
     PLabel.setValue(s[1]);
     ILabel.setValue(s[3]);
     DLabel.setValue(s[5]);
@@ -351,6 +354,31 @@ void serialEvent(Serial myPort)
       lbField.setValue(s[13]);    
       ATLabel.setValue(int(s[5])==1? "ON" : "OFF");
     }
+
+   //PID 002
+
+    P2Label.setValue(s[1]);
+    I2Label.setValue(s[3]);
+    D2Label.setValue(s[5]);
+    DR2Current.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");
+    AT2Current.setValue(int(s[7])==1? "ATune On" : "ATune Off");
+    oS2Label.setValue(s[9]);
+    n2Label.setValue(s[11]);
+    lb2Label.setValue(trim(s[13]));
+    if(tuneNull || int(trim(s[13]))==1)
+    {
+      tuneNull=false;
+      P2Field.setText(s[1]);    //   the arduino,  take the
+      I2Field.setText(s[3]);    //   current values and put
+      D2Field.setText(s[5]);
+      DR2Label.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");  
+      oS2Field.setText(s[9]);
+      n2Field.setText(s[11]);
+      lb2Field.setValue(s[13]);    
+      AT2Label.setValue(int(s[5])==1? "ON" : "OFF");
+    }
+
+
 
   }
   else if( s.length>3 && s[0].equals("PROF"))
