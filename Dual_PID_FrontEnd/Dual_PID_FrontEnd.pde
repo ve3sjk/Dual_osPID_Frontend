@@ -21,7 +21,7 @@ int refreshRate = 100;      // how often you want the graph to be reDrawn;
 //float displayFactor = 1000; //display Time as Seconds
 float displayFactor = 60000; //display Time as Minutes
 
-String outputFileName = ""; // if you'd like to output data to 
+String outputFileName = "dualpidtest"; // if you'd like to output data to 
 // a file, specify the path here
 
 /***********************************************
@@ -93,20 +93,20 @@ void setup()
     "Form Width", "Form Height", "Input Scale Minimum","Input Scale Maximum","Output Scale Minimum","Output Scale Maximum", "Time Span (Min)"        };   
   prefVals = new float[] {
     windowWidth, windowHeight, InScaleMin, InScaleMax, OutScaleMin, OutScaleMax, windowSpan / 1000 / 60        };
-  try
-  {
-    reader = createReader("prefs.txt");
-    if(reader!=null)
-    {
-      for(int i=0;i<prefVals.length;i++)prefVals[i] = float(reader.readLine());
-    } 
-  }
-  catch(FileNotFoundException  ex)  {    
-    println("here2");   
-  }
-  catch(IOException ex)  {    
-    println("here3");   
-  }
+//  try
+//  {
+//    reader = createReader("prefs.txt");
+//    if(reader!=null)
+//    {
+//      for(int i=0;i<prefVals.length;i++)prefVals[i] = float(reader.readLine());
+//    } 
+//  }
+//  catch(FileNotFoundException  ex)  {    
+//    println("here2");   
+//  }
+//  catch(IOException ex)  {    
+//    println("here3");   
+//  }
 
   PrefsToVals(); //read pref array into global variables
 

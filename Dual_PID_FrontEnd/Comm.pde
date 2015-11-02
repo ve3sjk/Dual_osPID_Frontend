@@ -15,7 +15,7 @@ void Connect()
       {
         if ( r1.getItem(i).getState())
         {
-          myPort = new Serial(this, CommPorts[i], 9600); 
+          myPort = new Serial(this, CommPorts[i], 115200); 
           myPort.bufferUntil(10); 
           //immediately send a request for osPID type;
           byte[] typeReq = new byte[]{
@@ -271,7 +271,7 @@ void serialEvent(Serial myPort)
   String[] s = split(read, " ");
   print(read);
 
-  if(s.length==4 && s[0].equals("osPID"))
+  if(s.length==3 && s[0].equals("Dual"))
   {
     ConnectButton.setVisible(false);
     Connecting.setVisible(false);
@@ -281,28 +281,28 @@ void serialEvent(Serial myPort)
     madeContact=true;
   }
   if(!madeContact) return;
-  if(s.length==6 && s[0].equals("DASH"))
+  if(s.length==16 && s[0].equals("DASH"))
   {
 
     Setpoint = float(s[1]);
-    Input = float(s[2]);
-    Output = float(s[3]);  
+    Input = float(s[4]);
+    Output = float(s[5]);  
     SPLabel.setValue(s[1]);           //   where it's needed
-    InLabel.setValue(s[2]);           //
-    OutLabel.setValue(s[3]);  
-    AMCurrent.setValue(int(s[4]) == 1 ? "Automatic" : "Manual");    
+    InLabel.setValue(s[3]);           //
+    OutLabel.setValue(s[5]);  
+    AMCurrent.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");    
     //if(SPField.valueLabel().equals("---"))
-    if(dashNull || int(trim(s[5]))==1)
+    if(dashNull || int(trim(s[8]))==1)
     {
 
       dashNull=false;
       SPField.setText(s[1]);    //   the arduino,  take the
-      InField.setText(s[2]);    //   current values and put
-      OutField.setText(s[3]);
-      AMLabel.setValue(int(s[4]) == 1 ? "Automatic" : "Manual");   
+      InField.setText(s[3]);    //   current values and put
+      OutField.setText(s[5]);
+      AMLabel.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");   
     }
   }
-  else if(s.length==10 && s[0].equals("TUNE"))
+  else if(s.length==17 && s[0].equals("TUNE"))
   {
     PLabel.setValue(s[1]);
     ILabel.setValue(s[2]);
