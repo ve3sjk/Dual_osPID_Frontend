@@ -59,27 +59,31 @@ void populateDashTab()
 
   //dasboard
 
+  // PID 001
   AMButton = controlP5.addButton("Toggle_AM",0.0,dashLeft,dashTop,60,20);      //
-  AMLabel = controlP5.addTextlabel("AM","Manual",dashLeft+2,dashTop+22);        //
+  AMLabel = controlP5.addTextlabel("AM","Manual",dashLeft+4,dashTop+22);        //
   SPField= controlP5.addTextfield("Setpoint",dashLeft,dashTop+40,60,20);         //   Buttons, Labels, and
   InField = controlP5.addTextfield("Input",dashLeft,dashTop+80,60,20);           //   Text Fields we'll be
   OutField = controlP5.addTextfield("Output",dashLeft,dashTop+120,60,20);         //   using
-  
-  AM2Button = controlP5.addButton("Toggle_AM 2",0.0,dashLeft,dashTop+160,60,20);      //
-  AM2Label = controlP5.addTextlabel("AM","Manual",dashLeft+2,dashTop+182);            //
-  SP2Field = controlP5.addTextfield("Setpoint 2",dashLeft,dashTop+220,60,20);         //   Buttons, Labels, and
-  In2Field = controlP5.addTextfield("Input 2",dashLeft,dashTop+260,60,20);           //   Text Fields we'll be
-  Out2Field = controlP5.addTextfield("Output 2",dashLeft,dashTop+300,60,20);         //   using
-
   AMCurrent = controlP5.addTextlabel("AMCurrent","Manual",dashLeft+70,dashTop+15);   //
   SPLabel = controlP5.addTextlabel("SP","3",dashLeft+70,dashTop+43);                  //
   InLabel = controlP5.addTextlabel("In","1",dashLeft+70,dashTop+83);                  //
   OutLabel = controlP5.addTextlabel("Out","2",dashLeft+70,dashTop+123);                // 
-  AM2Current = controlP5.addTextlabel("AMCurrent","Manual",dashLeft+70,dashTop+165);   //
-  SP2Label = controlP5.addTextlabel("SP","3",dashLeft+70,dashTop+223);                  //
-  In2Label = controlP5.addTextlabel("In","1",dashLeft+70,dashTop+263);                  //
-  Out2Label = controlP5.addTextlabel("Out","2",dashLeft+70,dashTop+303);                // 
-  controlP5.addButton("Send_Dash",0.0,dashLeft,dashTop+340,160,20);         //
+  
+  
+  // PID 002
+  AM2Button = controlP5.addButton("Toggle_AM2",0.0,dashLeft,dashTop+180,60,20);      //
+  AM2Label = controlP5.addTextlabel("AM2","Manual",dashLeft+4,dashTop+202);            //
+  SP2Field = controlP5.addTextfield("Setpoint2",dashLeft,dashTop+220,60,20);         //   Buttons, Labels, and
+  In2Field = controlP5.addTextfield("Input2",dashLeft,dashTop+260,60,20);           //   Text Fields we'll be
+  Out2Field = controlP5.addTextfield("Output2",dashLeft,dashTop+300,60,20);         //   using
+  AM2Current = controlP5.addTextlabel("AMCurrent2","Manual",dashLeft+70,dashTop+190);   //
+  SP2Label = controlP5.addTextlabel("SP2","3",dashLeft+70,dashTop+223);                  //
+  In2Label = controlP5.addTextlabel("In2","1",dashLeft+70,dashTop+263);                  //
+  Out2Label = controlP5.addTextlabel("Out2","2",dashLeft+70,dashTop+303);                // 
+  
+  
+  controlP5.addButton("Send_Dash",0.0,dashLeft,dashTop+350,160,20);         //
   
 
 
@@ -96,26 +100,32 @@ void populateDashTab()
 void populateTuneTab()
 {
   //tunings
+  
+  //PID 001
+    
   PField = controlP5.addTextfield("Kp (Proportional)",tuneLeft,tuneTop,60,20);          //
   IField = controlP5.addTextfield("Ki (Integral)",tuneLeft,tuneTop+40,60,20);          //
   DField = controlP5.addTextfield("Kd (Derivative)",tuneLeft,tuneTop+80,60,20);          //
   DRButton = controlP5.addButton("Toggle_DR",0.0,tuneLeft,tuneTop+120,60,20);      //
-  DRLabel = controlP5.addTextlabel("DR","Direct",tuneLeft+2,tuneTop+144);            //
-  P2Field = controlP5.addTextfield("Kp 2 (Proportional)",tuneLeft,tuneTop,60,20);          //
-  I2Field = controlP5.addTextfield("Ki 2 (Integral)",tuneLeft,tuneTop+40,60,20);          //
-  D2Field = controlP5.addTextfield("Kd 2 (Derivative)",tuneLeft,tuneTop+80,60,20);          //
-  DR2Button = controlP5.addButton("Toggle_DR 2",0.0,tuneLeft,tuneTop+120,60,20);      //
-  DR2Label = controlP5.addTextlabel("DR","Direct",tuneLeft+2,tuneTop+144);            //
-
+  DRLabel = controlP5.addTextlabel("DR","Direct",tuneLeft+2,tuneTop+144);
   PLabel=controlP5.addTextlabel("P","4",tuneLeft+70,tuneTop+3);                    //
   ILabel=controlP5.addTextlabel("I","5",tuneLeft+70,tuneTop+43);                    //
   DLabel=controlP5.addTextlabel("D","6",tuneLeft+70,tuneTop+83);                    //
   DRCurrent = controlP5.addTextlabel("DRCurrent","Direct",tuneLeft+70,tuneTop+123);   //
-  P2Label=controlP5.addTextlabel("P 2","4",tuneLeft+70,tuneTop+3);                    //
-  I2Label=controlP5.addTextlabel("I 2","5",tuneLeft+70,tuneTop+43);                    //
-  D2Label=controlP5.addTextlabel("D 2","6",tuneLeft+70,tuneTop+83);                    //
-  DR2Current = controlP5.addTextlabel("DRCurrent 2","Direct",tuneLeft+70,tuneTop+123);   //
-  controlP5.addButton("Send_Tunings",0.0,tuneLeft,tuneTop+160,160,20);         //  
+      
+  //PID 002
+  P2Field = controlP5.addTextfield("Kp2 (Proportional)",tuneLeft,tuneTop+200,60,20);          //
+  I2Field = controlP5.addTextfield("Ki2 (Integral)",tuneLeft,tuneTop+240,60,20);          //
+  D2Field = controlP5.addTextfield("Kd2 (Derivative)",tuneLeft,tuneTop+280,60,20);          //
+  DR2Button = controlP5.addButton("Toggle_DR2",0.0,tuneLeft,tuneTop+320,60,20);      //
+  DR2Label = controlP5.addTextlabel("DR2","Direct",tuneLeft+2,tuneTop+344);            //
+  P2Label=controlP5.addTextlabel("P2","7",tuneLeft+70,tuneTop+203);                    //
+  I2Label=controlP5.addTextlabel("I2","8",tuneLeft+70,tuneTop+243);                    //
+  D2Label=controlP5.addTextlabel("D2","9",tuneLeft+70,tuneTop+283);                    //
+  DR2Current = controlP5.addTextlabel("DRCurrent2","Direct",tuneLeft+70,tuneTop+323);   //
+  
+  
+  controlP5.addButton("Send_Tunings",0.0,tuneLeft,tuneTop+360,160,20);         //  
 
   PField.moveTo("Tab1"); 
   IField.moveTo("Tab1"); 
@@ -140,26 +150,35 @@ void populateTuneTab()
 
 
   //Autotune
+  
+  //PID 001
   oSField = controlP5.addTextfield("Output Step",ATLeft,ATTop,60,20);          //
   nField = controlP5.addTextfield("Noise Band",ATLeft,ATTop+40,60,20);          //
   lbField = controlP5.addTextfield("Look Back",ATLeft,ATTop+80,60,20);          //
   ATButton = controlP5.addButton("ATune_CMD",0.0,ATLeft,ATTop+120,60,20);      //
   ATLabel = controlP5.addTextlabel("ATune","OFF",ATLeft+2,ATTop+142);            //
-  oS2Field = controlP5.addTextfield("Output Step 2",ATLeft,ATTop,60,20);          //
-  n2Field = controlP5.addTextfield("Noise Band 2",ATLeft,ATTop+40,60,20);          //
-  lb2Field = controlP5.addTextfield("Look Back 2",ATLeft,ATTop+80,60,20);          //
-  AT2Button = controlP5.addButton("ATune_CMD 2",0.0,ATLeft,ATTop+120,60,20);      //
-  AT2Label = controlP5.addTextlabel("ATune 2","OFF",ATLeft+2,ATTop+142);            //
 
   oSLabel=controlP5.addTextlabel("oStep","4",ATLeft+70,ATTop+3);                    //
   nLabel=controlP5.addTextlabel("noise","5",ATLeft+70,ATTop+43); 
   lbLabel=controlP5.addTextlabel("lback","5",ATLeft+70,ATTop+83);   //
   ATCurrent = controlP5.addTextlabel("ATuneCurrent","Start",ATLeft+70,ATTop+123);   //
-  oS2Label=controlP5.addTextlabel("oStep 2","4",ATLeft+70,ATTop+3);                    //
-  n2Label=controlP5.addTextlabel("noise 2","5",ATLeft+70,ATTop+43); 
-  lb2Label=controlP5.addTextlabel("lback 2","5",ATLeft+70,ATTop+83);   //
-  AT2Current = controlP5.addTextlabel("ATuneCurrent 2","Start",ATLeft+70,ATTop+123);   //
-  controlP5.addButton("Send_Auto_Tune",0.0,ATLeft,ATTop+160,160,20);         //  
+  
+  
+  //PID --2
+  oS2Field = controlP5.addTextfield("Output2 Step",ATLeft,ATTop+180,60,20);          //
+  n2Field = controlP5.addTextfield("Noise2 Band",ATLeft,ATTop+220,60,20);          //
+  lb2Field = controlP5.addTextfield("Look2 Back",ATLeft,ATTop+260,60,20);          //
+  AT2Button = controlP5.addButton("ATune_CMD2",0.0,ATLeft,ATTop+300,60,20);      //
+  AT2Label = controlP5.addTextlabel("ATune2","OFF",ATLeft+2,ATTop+324);            //
+
+  oS2Label=controlP5.addTextlabel("oStep2","7",ATLeft+70,ATTop+183);                    //
+  n2Label=controlP5.addTextlabel("noise2","8",ATLeft+70,ATTop+223); 
+  lb2Label=controlP5.addTextlabel("lback2","9",ATLeft+70,ATTop+263);   //
+  AT2Current = controlP5.addTextlabel("ATuneCurrent2","Start",ATLeft+70,ATTop+300);   //
+  
+  
+  
+  controlP5.addButton("Send_Auto_Tune",0.0,ATLeft,ATTop+350,160,20);         //  
 
   oSField.moveTo("Tab1"); 
   nField.moveTo("Tab1"); 

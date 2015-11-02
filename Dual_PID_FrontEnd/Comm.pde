@@ -286,42 +286,69 @@ void serialEvent(Serial myPort)
 
     Setpoint = float(s[1]);
     Input = float(s[4]);
-    Output = float(s[5]);  
+    Output = float(s[5]); 
+    
     SPLabel.setValue(s[1]);           //   where it's needed
     InLabel.setValue(s[3]);           //
     OutLabel.setValue(s[5]);  
-    AMCurrent.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");    
+    AMCurrent.setValue(int(s[7]) == 1 ? "Automatic" : "Manual");    
     //if(SPField.valueLabel().equals("---"))
-    if(dashNull || int(trim(s[8]))==1)
+    if(dashNull || int(trim(s[7]))==1)
     {
 
       dashNull=false;
       SPField.setText(s[1]);    //   the arduino,  take the
       InField.setText(s[3]);    //   current values and put
       OutField.setText(s[5]);
-      AMLabel.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");   
+      AMLabel.setValue(int(s[7]) == 1 ? "Automatic" : "Manual");   
     }
+    
+        
+    
+    Setpoint2 = float(s[2]);
+    Input2 = float(s[4]);
+    Output2 = float(s[6]); 
+    
+    
+    SP2Label.setValue(s[2]);           //   where it's needed
+    In2Label.setValue(s[4]);           //
+    Out2Label.setValue(s[6]);  
+    AM2Current.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");    
+    //if(SPField.valueLabel().equals("---"))
+    if(dashNull || int(trim(s[8]))==1)
+    {
+
+      dashNull=false;
+      SP2Field.setText(s[1]);    //   the arduino,  take the
+      In2Field.setText(s[3]);    //   current values and put
+      Out2Field.setText(s[5]);
+      AM2Label.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");   
+    }
+   
+    
+    
+    
   }
   else if(s.length==17 && s[0].equals("TUNE"))
   {
     PLabel.setValue(s[1]);
-    ILabel.setValue(s[2]);
-    DLabel.setValue(s[3]);
-    DRCurrent.setValue(int(s[4]) == 1 ? "Reverse" : "Direct");
-    ATCurrent.setValue(int(s[5])==1? "ATune On" : "ATune Off");
-    oSLabel.setValue(s[6]);
-    nLabel.setValue(s[7]);
-    lbLabel.setValue(trim(s[8]));
-    if(tuneNull || int(trim(s[9]))==1)
+    ILabel.setValue(s[3]);
+    DLabel.setValue(s[5]);
+    DRCurrent.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");
+    ATCurrent.setValue(int(s[7])==1? "ATune On" : "ATune Off");
+    oSLabel.setValue(s[9]);
+    nLabel.setValue(s[11]);
+    lbLabel.setValue(trim(s[13]));
+    if(tuneNull || int(trim(s[13]))==1)
     {
       tuneNull=false;
       PField.setText(s[1]);    //   the arduino,  take the
-      IField.setText(s[2]);    //   current values and put
-      DField.setText(s[3]);
-      DRLabel.setValue(int(s[4]) == 1 ? "Reverse" : "Direct");  
-      oSField.setText(s[6]);
-      nField.setText(s[7]);
-      lbField.setValue(s[8]);    
+      IField.setText(s[3]);    //   current values and put
+      DField.setText(s[5]);
+      DRLabel.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");  
+      oSField.setText(s[9]);
+      nField.setText(s[11]);
+      lbField.setValue(s[13]);    
       ATLabel.setValue(int(s[5])==1? "ON" : "OFF");
     }
 

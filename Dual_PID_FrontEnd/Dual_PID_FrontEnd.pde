@@ -5,13 +5,13 @@ import controlP5.*;
 /***********************************************
  * User spcification section
  **********************************************/
-int windowWidth = 900;      // set the size of the 
-int windowHeight = 600;     // form
+int windowWidth = 1500;      // set the size of the 
+int windowHeight = 900;     // form
 
 float InScaleMin = 0;       // set the Y-Axis Min
-float InScaleMax = 1024;    // and Max for both
+float InScaleMax = 300;    // and Max for both
 float OutScaleMin = 0;      // the top and 
-float OutScaleMax = 100;    // bottom trends
+float OutScaleMax = 300;    // bottom trends
 
 
 int windowSpan = 300000;    // number of mS into the past you want to display
@@ -21,7 +21,7 @@ int refreshRate = 100;      // how often you want the graph to be reDrawn;
 //float displayFactor = 1000; //display Time as Seconds
 float displayFactor = 60000; //display Time as Minutes
 
-String outputFileName = "dualpidtest"; // if you'd like to output data to 
+String outputFileName = "dualpidtest.txt"; // if you'd like to output data to 
 // a file, specify the path here
 
 /***********************************************
@@ -33,6 +33,11 @@ int arrayLength = windowSpan / refreshRate+1;
 float[] InputData = new float[arrayLength];     //we might not need them this big, but
 float[] SetpointData = new float[arrayLength];  // this is worst case
 float[] OutputData = new float[arrayLength];
+
+float[] InputData2 = new float[arrayLength];     //we might not need them this big, but
+float[] SetpointData2 = new float[arrayLength];  // this is worst case
+float[] OutputData2 = new float[arrayLength];
+
 
 int startTime;
 
@@ -48,6 +53,7 @@ float pointWidth= (ioWidth)/float(arrayLength-1);
 int vertCount = 10;
 int nPoints = 0;
 float Input, Setpoint, Output;
+float Input2, Setpoint2, Output2;
 
 boolean madeContact =false;
 
@@ -73,8 +79,8 @@ PrintWriter output;
 PFont AxisFont, TitleFont, ProfileFont; 
 
 int dashTop = 200, dashLeft = 10, dashW=160, dashH=380; 
-int tuneTop = 30, tuneLeft = 10, tuneW=160, tuneH=180;
-int ATTop = 230, ATLeft = 10, ATW=160, ATH=180;
+int tuneTop = 100, tuneLeft = 10, tuneW=160, tuneH=380;
+int ATTop = 500, ATLeft = 10, ATW=160, ATH=380;
 int commTop = 30, commLeft = 10, commW=160, commH=180; 
 int configTop = 30, configLeft = 10, configW=160, configH=200;
 int RsTop = configTop+2*configH+30, RsLeft = 10, RsW=160, RsH=30;
@@ -258,6 +264,14 @@ void Nullify()
     "Ki (Integral)","Kd (Derivative)","DR","P","I","D","DRCurrent",
     "Noise Band","ATune","oStep","noise","ATuneCurrent","Look Back","lback"  }; //,"  "," ","","Output Step","   ",
   for(int i=0;i<names.length;i++)controlP5.controller(names[i]).setValueLabel("---");
+  
+  String[] names2 = {
+    "AM2", "Setpoint2", "Input2", "Output2", "AMCurrent2", "SP2", "In2", "Out2", "Kp2 (Proportional)",
+    "Ki2 (Integral)","Kd2 (Derivative)","DR2","P2","I2","D2","DRCurrent2",
+    "Noise2 Band","ATune2","oStep2","noise2","ATuneCurrent2","Look2 Back","lback2"  }; //,"  "," ","","Output Step","   ",
+  for(int i=0;i<names2.length;i++)controlP5.controller(names2[i]).setValueLabel("---");
+  
+  
   dashNull=true;tuneNull=true;
 }
 
