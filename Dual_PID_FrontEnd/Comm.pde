@@ -285,7 +285,7 @@ void serialEvent(Serial myPort)
   {
 
     Setpoint = float(s[1]);
-    Input = float(s[4]);
+    Input = float(s[3]);
     Output = float(s[5]); 
     
     SPLabel.setValue(s[1]);           //   where it's needed
@@ -357,25 +357,25 @@ void serialEvent(Serial myPort)
 
    //PID 002
 
-    P2Label.setValue(s[1]);
-    I2Label.setValue(s[3]);
-    D2Label.setValue(s[5]);
-    DR2Current.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");
-    AT2Current.setValue(int(s[7])==1? "ATune On" : "ATune Off");
-    oS2Label.setValue(s[9]);
-    n2Label.setValue(s[11]);
-    lb2Label.setValue(trim(s[13]));
-    if(tuneNull || int(trim(s[13]))==1)
+    P2Label.setValue(s[2]);
+    I2Label.setValue(s[4]);
+    D2Label.setValue(s[6]);
+    DR2Current.setValue(int(s[8]) == 1 ? "Reverse" : "Direct");
+    AT2Current.setValue(int(s[8])==1? "ATune On" : "ATune Off");
+    oS2Label.setValue(s[10]);
+    n2Label.setValue(s[12]);
+    lb2Label.setValue(trim(s[14]));
+    if(tuneNull || int(trim(s[14]))==1)
     {
       tuneNull=false;
-      P2Field.setText(s[1]);    //   the arduino,  take the
-      I2Field.setText(s[3]);    //   current values and put
-      D2Field.setText(s[5]);
-      DR2Label.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");  
-      oS2Field.setText(s[9]);
-      n2Field.setText(s[11]);
-      lb2Field.setValue(s[13]);    
-      AT2Label.setValue(int(s[5])==1? "ON" : "OFF");
+      P2Field.setText(s[2]);    //   the arduino,  take the
+      I2Field.setText(s[4]);    //   current values and put
+      D2Field.setText(s[6]);
+      DR2Label.setValue(int(s[8]) == 1 ? "Reverse" : "Direct");  
+      oS2Field.setText(s[10]);
+      n2Field.setText(s[12]);
+      lb2Field.setValue(s[14]);    
+      AT2Label.setValue(int(s[6])==1? "ON" : "OFF");
     }
 
 
