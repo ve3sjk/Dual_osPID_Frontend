@@ -64,40 +64,54 @@ void Disconnect()
 // - using the java ByteBuffer class, convert
 //   that array to a 24 member byte array
 // - send those bytes to the arduino
+
+
+
 void Send_Dash()//To_Controller()
 {
-
-
   float[] toSend = new float[4];
-  toSend[0] = float(SPField.getText());
-  toSend[1] = float(SP2Field.getText());
-  toSend[2] = float(OutField.getText());
-  toSend[3] = float(Out2Field.getText());
+  byte a = (pid1_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  byte b = (pid2_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  
+  // PID 001
+  toSend[0] = float(pid1_SPField.getText());
+  toSend[1] = float(pid1_OutField.getText());
+  
+  // PID 002
+  toSend[2] = float(pid2_SPField.getText());
+  toSend[3] = float(pid2_OutField.getText());
+  
 
-
-
-  byte a = (AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
-  byte b = (AM2Label.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
-  byte identifier = 0;
-  myPort.write(identifier);
+  byte pid1_identifier = 0;
+    
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
+
+  
 } 
 
 void Send_Tunings()
 {
   float[] toSend = new float[6];
-  byte a = (DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
-  byte b = (DR2Label.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
-  toSend[0] = float(PField.getText());
-  toSend[1] = float(PField.getText());
-  toSend[2] = float(IField.getText());
-  toSend[3] = float(IField.getText());
-  toSend[4] = float(DField.getText());
-  toSend[5] = float(DField.getText());
-  byte identifier = 1;
-  myPort.write(identifier);
+  byte a = (pid1_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  byte b = (pid2_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  
+  toSend[0] = float(pid1_PField.getText());
+  toSend[1] = float(pid1_IField.getText());
+  toSend[2] = float(pid1_DField.getText());
+  
+  
+  toSend[3] = float(pid2_PField.getText());
+  toSend[4] = float(pid2_IField.getText());
+  toSend[5] = float(pid2_DField.getText());
+  
+  
+  
+  
+  byte pid1_identifier = 1;
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
@@ -106,16 +120,19 @@ void Send_Tunings()
 void Send_Auto_Tune()
 {
   float[] toSend = new float[6];
-  byte a = (ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
-  byte b = (AT2Label.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
-  toSend[0] = float(oSField.getText());
-  toSend[1] = float(oSField.getText());
-  toSend[2] = float(nField.getText());
-  toSend[3] = float(nField.getText());
-  toSend[4] = float(lbField.getText());
-  toSend[5] = float(lbField.getText());
-  byte identifier = 2;
-  myPort.write(identifier);
+  
+  toSend[0] = float(pid1_oSField.getText());
+  toSend[1] = float(pid1_nField.getText());
+  toSend[2] = float(pid1_lbField.getText());
+  byte a = (pid1_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  
+  toSend[3] = float(pid2_oSField.getText());
+  toSend[4] = float(pid2_nField.getText());
+  toSend[5] = float(pid2_lbField.getText());
+  byte b = (pid2_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  
+  byte pid1_identifier = 2;
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(b);
   myPort.write(floatArrayToByteArray(toSend));
@@ -136,8 +153,8 @@ void Send_Configuration()//To_Controller()
 
   byte o = r3.getState(0)==true ? (byte)0 : (byte)1;
 
-  byte identifier = 5;
-  myPort.write(identifier);
+  byte pid1_identifier = 5;
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(o);
   myPort.write(floatArrayToByteArray(toSend));
@@ -145,19 +162,19 @@ void Send_Configuration()//To_Controller()
 void Run_Profile()
 {
 
-  byte identifier = 6;
+  byte pid1_identifier = 6;
   byte a = 1;
   byte b = 1;
-  myPort.write(identifier);
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(b);
 }
 void Stop_Profile()
 {
-  byte identifier = 6;
+  byte pid1_identifier = 6;
   byte a = 0;
   byte b = 0;
-  myPort.write(identifier);
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(b);
 }
@@ -165,9 +182,9 @@ void Stop_Profile()
 void Send_Profile()
 {
   currentxferStep=0;
-  byte identifier=4;
+  byte pid1_identifier=4;
   byte a=15;
-  myPort.write(identifier);
+  myPort.write(pid1_identifier);
   myPort.write(a);
   myPort.write(currentxferStep);
   SendProfileStep(byte(currentxferStep));
@@ -185,12 +202,12 @@ void SendProfileStep(byte step)
 
 void SendProfileName()
 {
-  byte identifier=7;
+  byte pid1_identifier=7;
 
 
   byte[] toSend = new byte[9];
 
-  toSend[0] = identifier;
+  toSend[0] = pid1_identifier;
   toSend[1] = byte(currentxferStep);
   try
   {
@@ -208,8 +225,8 @@ void SendProfileName()
 
 void Reset_Factory_Defaults()
 {
-  Byte identifier = 3;
-  myPort.write(identifier);
+  Byte pid1_identifier = 3;
+  myPort.write(pid1_identifier);
   myPort.write((byte)9);
   myPort.write((byte)8); 
 }
@@ -284,98 +301,100 @@ void serialEvent(Serial myPort)
   if(s.length==16 && s[0].equals("DASH"))
   {
 
-    Setpoint = float(s[1]);
-    Input = float(s[3]);
-    Output = float(s[5]); 
+    pid1_Setpoint = float(s[1]);
+    pid1_Input = float(s[2]);
+    pid1_Output = float(s[3]); 
     
-    SPLabel.setValue(s[1]);           //   where it's needed
-    InLabel.setValue(s[3]);           //
-    OutLabel.setValue(s[5]);  
-    AMCurrent.setValue(int(s[7]) == 1 ? "Automatic" : "Manual");    
-    //if(SPField.valueLabel().equals("---"))
-    if(dashNull || int(trim(s[7]))==1)
+    pid1_SPLabel.setValue(s[1]);           //   where it's needed
+    pid1_InLabel.setValue(s[2]);           //
+    pid1_OutLabel.setValue(s[3]);
+    
+    pid1_AMCurrent.setValue(int(s[4]) == 1 ? "Automatic" : "Manual"); 
+    
+    //if(pid1_SPField.valueLabel().equals("---"))
+    if(dashNull || int(trim(s[4]))==1)
     {
 
       dashNull=false;
-      SPField.setText(s[1]);    //   the arduino,  take the
-      InField.setText(s[3]);    //   current values and put
-      OutField.setText(s[5]);
-      AMLabel.setValue(int(s[7]) == 1 ? "Automatic" : "Manual");   
+      pid1_SPField.setText(s[1]);    //   the arduino,  take the
+      pid1_InField.setText(s[2]);    //   current values and put
+      pid1_OutField.setText(s[3]);
+      pid1_AMLabel.setValue(int(s[4]) == 1 ? "Automatic" : "Manual");   
     }
     
         
     
-    Setpoint2 = float(s[2]);
-    Input2 = float(s[4]);
-    Output2 = float(s[6]); 
+    pid2_Setpoint = float(s[5]);
+    pid2_Input = float(s[6]);
+    pid2_Output = float(s[7]); 
     
     
-    SP2Label.setValue(s[2]);           //   where it's needed
-    In2Label.setValue(s[4]);           //
-    Out2Label.setValue(s[6]);  
-    AM2Current.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");    
-    //if(SPField.valueLabel().equals("---"))
+    pid2_SPLabel.setValue(s[5]);           //   where it's needed
+    pid2_InLabel.setValue(s[6]);           //
+    pid2_OutLabel.setValue(s[7]);  
+    pid2_AMCurrent.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");    
+    //if(pid2_SPField.valueLabel().equals("---"))
     if(dashNull || int(trim(s[8]))==1)
     {
 
       dashNull=false;
-      SP2Field.setText(s[1]);    //   the arduino,  take the
-      In2Field.setText(s[3]);    //   current values and put
-      Out2Field.setText(s[5]);
-      AM2Label.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");   
+      pid2_SPField.setText(s[5]);    //   the arduino,  take the
+      pid2_InField.setText(s[6]);    //   current values and put
+      pid2_OutField.setText(s[7]);
+      pid2_AMLabel.setValue(int(s[8]) == 1 ? "Automatic" : "Manual");   
     }
    
     
     
     
   }
-  else if(s.length==17 && s[0].equals("TUNE"))
+  else if(s.length==18 && s[0].equals("TUNE"))
   {
    
     //PID 001
    
-    PLabel.setValue(s[1]);
-    ILabel.setValue(s[3]);
-    DLabel.setValue(s[5]);
-    DRCurrent.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");
-    ATCurrent.setValue(int(s[7])==1? "ATune On" : "ATune Off");
-    oSLabel.setValue(s[9]);
-    nLabel.setValue(s[11]);
-    lbLabel.setValue(trim(s[13]));
-    if(tuneNull || int(trim(s[13]))==1)
+    pid1_PLabel.setValue(s[1]);
+    pid1_ILabel.setValue(s[2]);
+    pid1_DLabel.setValue(s[3]);
+    pid1_DRCurrent.setValue(int(s[4]) == 1 ? "Reverse" : "Direct");
+    pid1_ATCurrent.setValue(int(s[5])==1? "ATune On" : "ATune Off");
+    pid1_oSLabel.setValue(s[11]);
+    pid1_nLabel.setValue(s[12]);
+    pid1_lbLabel.setValue(trim(s[13]));
+    if(tuneNull || int(trim(s[5]))==1)
     {
       tuneNull=false;
-      PField.setText(s[1]);    //   the arduino,  take the
-      IField.setText(s[3]);    //   current values and put
-      DField.setText(s[5]);
-      DRLabel.setValue(int(s[7]) == 1 ? "Reverse" : "Direct");  
-      oSField.setText(s[9]);
-      nField.setText(s[11]);
-      lbField.setValue(s[13]);    
-      ATLabel.setValue(int(s[5])==1? "ON" : "OFF");
+      pid1_PField.setText(s[1]);    //   the arduino,  take the
+      pid1_IField.setText(s[2]);    //   current values and put
+      pid1_DField.setText(s[3]);
+      pid1_DRLabel.setValue(int(s[4]) == 1 ? "Reverse" : "Direct");  
+      pid1_oSField.setText(s[11]);
+      pid1_nField.setText(s[12]);
+      pid1_lbField.setValue(s[13]);    
+      pid1_ATLabel.setValue(int(s[5])==1? "ON" : "OFF");
     }
 
    //PID 002
 
-    P2Label.setValue(s[2]);
-    I2Label.setValue(s[4]);
-    D2Label.setValue(s[6]);
-    DR2Current.setValue(int(s[8]) == 1 ? "Reverse" : "Direct");
-    AT2Current.setValue(int(s[8])==1? "ATune On" : "ATune Off");
-    oS2Label.setValue(s[10]);
-    n2Label.setValue(s[12]);
-    lb2Label.setValue(trim(s[14]));
-    if(tuneNull || int(trim(s[14]))==1)
+    pid2_PLabel.setValue(s[6]);
+    pid2_ILabel.setValue(s[7]);
+    pid2_DLabel.setValue(s[8]);
+    pid2_DRCurrent.setValue(int(s[9]) == 1 ? "Reverse" : "Direct");
+    pid2_ATCurrent.setValue(int(s[10])==1? "ATune On" : "ATune Off");
+    pid2_oSLabel.setValue(s[14]);
+    pid2_nLabel.setValue(s[15]);
+    pid2_lbLabel.setValue(trim(s[16]));
+    if(tuneNull || int(trim(s[10]))==1)
     {
       tuneNull=false;
-      P2Field.setText(s[2]);    //   the arduino,  take the
-      I2Field.setText(s[4]);    //   current values and put
-      D2Field.setText(s[6]);
-      DR2Label.setValue(int(s[8]) == 1 ? "Reverse" : "Direct");  
-      oS2Field.setText(s[10]);
-      n2Field.setText(s[12]);
-      lb2Field.setValue(s[14]);    
-      AT2Label.setValue(int(s[6])==1? "ON" : "OFF");
+      pid2_PField.setText(s[6]);    //   the arduino,  take the
+      pid2_IField.setText(s[7]);    //   current values and put
+      pid2_DField.setText(s[8]);
+      pid2_DRLabel.setValue(int(s[9]) == 1 ? "Reverse" : "Direct");  
+      pid2_oSField.setText(s[14]);
+      pid2_nField.setText(s[15]);
+      pid2_lbField.setValue(s[16]);    
+      pid2_ATLabel.setValue(int(s[10])==1? "ON" : "OFF");
     }
 
 

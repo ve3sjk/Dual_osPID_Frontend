@@ -8,10 +8,10 @@ import controlP5.*;
 int windowWidth = 1500;      // set the size of the 
 int windowHeight = 900;     // form
 
-float InScaleMin = 0;       // set the Y-Axis Min
-float InScaleMax = 300;    // and Max for both
-float OutScaleMin = 0;      // the top and 
-float OutScaleMax = 300;    // bottom trends
+float pid1_InScaleMin = 0;       // set the Y-Axis Min
+float pid1_InScaleMax = 300;    // and Max for both
+float pid1_OutScaleMin = 0;      // the top and 
+float pid1_OutScaleMax = 300;    // bottom trends
 
 
 int windowSpan = 300000;    // number of mS into the past you want to display
@@ -30,13 +30,13 @@ String outputFileName = "dualpidtest.txt"; // if you'd like to output data to
 
 int nextRefresh;
 int arrayLength = windowSpan / refreshRate+1;
-float[] InputData = new float[arrayLength];     //we might not need them this big, but
-float[] SetpointData = new float[arrayLength];  // this is worst case
-float[] OutputData = new float[arrayLength];
+float[] pid1_InputData = new float[arrayLength];     //we might not need them this big, but
+float[] pid1_SetpointData = new float[arrayLength];  // this is worst case
+float[] pid1_OutputData = new float[arrayLength];
 
-float[] InputData2 = new float[arrayLength];     //we might not need them this big, but
-float[] SetpointData2 = new float[arrayLength];  // this is worst case
-float[] OutputData2 = new float[arrayLength];
+float[] pid2_InputData = new float[arrayLength];     //we might not need them this big, but
+float[] pid2_setpointdata = new float[arrayLength];  // this is worst case
+float[] pid2_OutputData = new float[arrayLength];
 
 
 int startTime;
@@ -52,28 +52,24 @@ float pointWidth= (ioWidth)/float(arrayLength-1);
 
 int vertCount = 10;
 int nPoints = 0;
-float Input, Setpoint, Output;
-float Input2, Setpoint2, Output2;
+float pid1_Input, pid1_Setpoint, pid1_Output;
+float pid2_Input, pid2_Setpoint, pid2_Output;
 
 boolean madeContact =false;
 
 Serial myPort;
 
 ControlP5 controlP5;
-controlP5.Button AMButton, AM2Button, DRButton, DR2Button, ATButton, AT2Button, ConnectButton, DisconnectButton, ProfButton, ProfCmd, ProfCmdStop;
-controlP5.Textlabel AMLabel, AM2Label, AMCurrent, AM2Current, InLabel, In2Label, 
-OutLabel, Out2Label, SPLabel, SP2Label, PLabel, P2Label, 
-ILabel, I2Label, DLabel, D2Label, DRLabel, DR2Label, DRCurrent, DR2Current, ATLabel, AT2Label,
-oSLabel, oS2Label, nLabel, n2Label, ATCurrent, AT2Current, Connecting, lbLabel, lb2Label,
-profSelLabel, commconfigLabel1, commconfigLabel2;
+controlP5.Button pid1_AMButton, pid2_AMButton, pid1_DRButton, pid2_DRButton, pid1_ATButton, pid2_ATButton, ConnectButton, DisconnectButton, ProfButton, ProfCmd, ProfCmdStop;
+controlP5.Textlabel pid1_AMLabel, pid2_AMLabel, pid1_AMCurrent, pid2_AMCurrent, pid1_INLabel, pid2_INLabel, pid1_OutLabel, pid2_OutLabel, pid1_SPLabel, pid2_SPLabel, pid1_PLabel, pid2_PLabel, pid1_ILabel, pid2_ILabel, pid1_DLabel, pid2_DLabel, pid1_DRLabel, pid2_DRLabel, pid1_DRCurrent, pid2_DRCurrent, pid1_ATLabel, pid2_ATLabel, pid1_oSLabel, pid2_oSLabel, pid1_InLabel, pid2_InLabel, pid1_ATCurrent, pid2_ATCurrent, Connecting, pid1_nLabel, pid2_nLabel, pid1_lbLabel, pid2_lbLabel, profSelLabel, commconfigLabel1, commconfigLabel2;
 RadioButton r1,r2,r3; 
 ListBox LBPref;
 String[] CommPorts;
 String[] prefs;
 float[] prefVals;
-controlP5.Textfield SPField, SP2Field, InField, In2Field, OutField, Out2Field, 
-PField, P2Field, IField, I2Field, DField, D2Field, oSField, oS2Field, 
-nField, n2Field, T0Field, R0Field, BetaField, lbField, lb2Field, oSecField;
+controlP5.Textfield pid1_SPField, pid2_SPField, pid1_InField, pid2_InField, pid1_OutField, pid2_OutField, 
+pid1_PField, pid2_PField, pid1_IField, pid2_IField, pid1_DField, pid2_DField, pid1_oSField, pid2_oSField, 
+pid1_nField, pid2_nField, T0Field, R0Field, BetaField, pid1_lbField, pid2_lbField, oSecField;
 String pHold="", iHold="", dHold="";
 PrintWriter output;
 PFont AxisFont, TitleFont, ProfileFont; 
@@ -96,9 +92,9 @@ void setup()
 
   //read in preferences
   prefs = new String[] {
-    "Form Width", "Form Height", "Input Scale Minimum","Input Scale Maximum","Output Scale Minimum","Output Scale Maximum", "Time Span (Min)"        };   
+    "Form Width", "Form Height", "pid1_Input Scale Minimum","pid1_Input Scale Maximum","pid1_Output Scale Minimum","pid1_Output Scale Maximum", "Time Span (Min)"        };   
   prefVals = new float[] {
-    windowWidth, windowHeight, InScaleMin, InScaleMax, OutScaleMin, OutScaleMax, windowSpan / 1000 / 60        };
+    windowWidth, windowHeight, pid1_InScaleMin, pid1_InScaleMax, pid1_OutScaleMin, pid1_OutScaleMax, windowSpan / 1000 / 60        };
 //  try
 //  {
 //    reader = createReader("prefs.txt");
@@ -116,7 +112,7 @@ void setup()
 
   PrefsToVals(); //read pref array into global variables
 
-    String curDir = sketchPath;
+  String curDir = sketchPath;
   ReadProfiles(curDir+ File.separator + "profiles");
 
 
@@ -185,10 +181,10 @@ void PrefsToVals()
 {
   windowWidth = int(prefVals[0]);
   windowHeight = int(prefVals[1]);
-  InScaleMin = prefVals[2];
-  InScaleMax = prefVals[3];
-  OutScaleMin = prefVals[4];
-  OutScaleMax = prefVals[5];    
+  pid1_InScaleMin = prefVals[2];
+  pid1_InScaleMax = prefVals[3];
+  pid1_OutScaleMin = prefVals[4];
+  pid1_OutScaleMax = prefVals[5];    
   windowSpan = int(prefVals[6] * 1000 * 60);
 
   inputTop = 25;
@@ -201,9 +197,11 @@ void PrefsToVals()
   ioRight = ioLeft+ioWidth;
 
   arrayLength = windowSpan / refreshRate+1;
-  InputData = (float[])resizeArray(InputData,arrayLength);
-  SetpointData = (float[])resizeArray(SetpointData,arrayLength);
-  OutputData = (float[])resizeArray(OutputData,arrayLength);   
+  pid1_InputData = (float[])resizeArray(pid1_InputData,arrayLength);
+  pid1_SetpointData = (float[])resizeArray(pid1_SetpointData,arrayLength);
+  pid1_OutputData = (float[])resizeArray(pid1_OutputData,arrayLength); 
+
+
 
   pointWidth= (ioWidth)/float(arrayLength-1);
   resizer(windowWidth, windowHeight);
@@ -245,7 +243,7 @@ void Save_Preferences()
   PrintWriter output;
   try
   {
-    output = createWriter("prefs.txt");
+    output = createWriter("prefs1.txt");
     for(int i=0;i<prefVals.length;i++) output.println(prefVals[i]);
     output.flush();
     output.close();
@@ -260,15 +258,15 @@ void Nullify()
 {
 
   String[] names = {
-    "AM", "Setpoint", "Input", "Output", "AMCurrent", "SP", "In", "Out", "Kp (Proportional)",
-    "Ki (Integral)","Kd (Derivative)","DR","P","I","D","DRCurrent",
-    "Noise Band","ATune","oStep","noise","ATuneCurrent","Look Back","lback"  }; //,"  "," ","","Output Step","   ",
+    "pid1_AM", "pid1_Setpoint", "pid1_Input", "pid1_Output", "pid1_AMCurrent", "pid1_SP", "pid1_In", "pid1_Out", "pid1_Kp (Proportional)",
+    "pid1_Ki (Integral)","pid1_Kd (Derivative)","pid1_DR","pid1_P","pid1_I","pid1_D","pid1_DRCurrent",
+    "pid1_Noise Band","pid1_ATune","pid1_oStep","pid1_noise","pid1_ATuneCurrent","pid1_Look Back","pid1_lback"  }; //,"  "," ","","pid1_Output Step","   ",
   for(int i=0;i<names.length;i++)controlP5.controller(names[i]).setValueLabel("---");
   
   String[] names2 = {
-    "AM2", "Setpoint2", "Input2", "Output2", "AMCurrent2", "SP2", "In2", "Out2", "Kp2 (Proportional)",
-    "Ki2 (Integral)","Kd2 (Derivative)","DR2","P2","I2","D2","DRCurrent2",
-    "Noise2 Band","ATune2","oStep2","noise2","ATuneCurrent2","Look2 Back","lback2"  }; //,"  "," ","","Output Step","   ",
+    "pid2_AM", "pid2_Setpoint", "pid1_Input", "pid2_Output", "pid2_AMCurrent", "pid2_SP", "pid2_In", "pid2_Out", "pid2_Kp (Proportional)",
+    "pid2_Ki (Integral)","pid2_Kd (Derivative)","pid2_DR","pid2_P","pid2_I","pid2_D","pid2_DRCurrent",
+    "pid2_Noise Band","pid2_ATune","pid2_oStep","pid2_noise","pid2_ATuneCurrent","pid2_Look Back","pid2_lback"  }; //,"  "," ","","pid2_Output Step","   ",
   for(int i=0;i<names2.length;i++)controlP5.controller(names2[i]).setValueLabel("---");
   
   
@@ -321,70 +319,70 @@ void drawButtonArea()
 
 }
 
-void Toggle_AM() {
-  if(AMLabel.valueLabel().getText()=="Manual") 
+void pid1_Toggle_AM() {
+  if(pid1_AMLabel.valueLabel().getText()=="Manual") 
   {
-    AMLabel.setValue("Automatic");
+    pid1_AMLabel.setValue("Automatic");
   }
   else
   {
-    AMLabel.setValue("Manual");   
+    pid1_AMLabel.setValue("Manual");   
   }
 }
 
-void Toggle_AM2() {
-  if(AM2Label.valueLabel().getText()=="Manual") 
+void pid2_Toggle_AM() {
+  if(pid2_AMLabel.valueLabel().getText()=="Manual") 
   {
-    AM2Label.setValue("Automatic");
+    pid2_AMLabel.setValue("Automatic");
   }
   else
   {
-    AM2Label.setValue("Manual");   
+    pid2_AMLabel.setValue("Manual");   
   }
 }
 
-void Toggle_DR() {
-  if(DRLabel.valueLabel().getText()=="Direct") 
+void pid1_Toggle_DR() {
+  if(pid1_DRLabel.valueLabel().getText()=="Direct") 
   {
-    DRLabel.setValue("Reverse");
+    pid1_DRLabel.setValue("Reverse");
   }
   else
   {
-    DRLabel.setValue("Direct");   
+    pid1_DRLabel.setValue("Direct");   
   }
 }
 
-void Toggle_DR2() {
-  if(DR2Label.valueLabel().getText()=="Direct") 
+void pid2_Toggle_DR() {
+  if(pid2_DRLabel.valueLabel().getText()=="Direct") 
   {
-    DR2Label.setValue("Reverse");
+    pid2_DRLabel.setValue("Reverse");
   }
   else
   {
-    DR2Label.setValue("Direct");   
+    pid2_DRLabel.setValue("Direct");   
   }
 }
 
-void ATune_CMD() {
-  if(ATLabel.valueLabel().getText()=="OFF") 
+void pid1_ATune_CMD() {
+  if(pid1_ATLabel.valueLabel().getText()=="OFF") 
   {
-    ATLabel.setValue("ON");
+    pid1_ATLabel.setValue("ON");
   }
   else
   {
-    ATLabel.setValue("OFF");   
+    pid1_ATLabel.setValue("OFF");   
   }
 }
 
-void ATune_CMD2() {
-  if(AT2Label.valueLabel().getText()=="OFF") 
+void pid2_ATune_CMD() {
+  if(pid2_ATLabel.valueLabel().getText()=="OFF") 
   {
-    AT2Label.setValue("ON");
+    pid2_ATLabel.setValue("ON");
   }
   else
   {
-    AT2Label.setValue("OFF");   
-  }
+    pid2_ATLabel.setValue("OFF");   
+  } 
 }
 
 

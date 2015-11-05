@@ -7,15 +7,15 @@ void AdvanceData()
 
     for(int i=nPoints-1;i>0;i--)
     {
-      InputData[i]=InputData[i-1];
-      SetpointData[i]=SetpointData[i-1];
-      OutputData[i]=OutputData[i-1];
+      pid1_InputData[i]=pid1_InputData[i-1];
+      pid1_SetpointData[i]=pid1_SetpointData[i-1];
+      pid1_OutputData[i]=pid1_OutputData[i-1];
     }
     if (nPoints < arrayLength) nPoints++;
 
-    InputData[0] = Input;
-    SetpointData[0] = Setpoint;
-    OutputData[0] = Output;
+    pid1_InputData[0] = pid1_Input;
+    pid1_SetpointData[0] = pid1_Setpoint;
+    pid1_OutputData[0] = pid1_Output;
   }  
 }
 
@@ -45,14 +45,14 @@ void drawGraph()
   for(int i=0;i<6;i++)
   {
     if(i>0&&i<5) line(ioLeft+1,inputTop+i*interval,ioRight-2,inputTop+i*interval);
-    text(str((InScaleMax-InScaleMin)/5*(float)(5-i)+InScaleMin),ioRight+5,inputTop+i*interval+4);
+    text(str((pid1_InScaleMax-pid1_InScaleMin)/5*(float)(5-i)+pid1_InScaleMin),ioRight+5,inputTop+i*interval+4);
 
   }
   interval = (int)outputHeight/5;
   for(int i=0;i<6;i++)
   {
     if(i>0&&i<5) line(ioLeft+1,outputTop+i*interval,ioRight-2,outputTop+i*interval);
-    text(str((OutScaleMax-OutScaleMin)/5*(float)(5-i)+OutScaleMin),ioRight+5,outputTop+i*interval+4);
+    text(str((pid1_OutScaleMax-pid1_OutScaleMin)/5*(float)(5-i)+pid1_OutScaleMin),ioRight+5,outputTop+i*interval+4);
   }
 
   //vertical grid lines and TimeStamps
@@ -92,8 +92,8 @@ void drawGraph()
     //DRAW THE INPUT
     boolean drawLine=true;
     stroke(255,0,0);
-    int Y1 = int(inputHeight)-int(inputHeight*(InputData[i]-InScaleMin)/(InScaleMax-InScaleMin)); //InputData[i];
-    int Y2 = int(inputHeight)-int(inputHeight*(InputData[i+1]-InScaleMin)/(InScaleMax-InScaleMin)); //InputData[i+1];
+    int Y1 = int(inputHeight)-int(inputHeight*(pid1_InputData[i]-pid1_InScaleMin)/(pid1_InScaleMax-pid1_InScaleMin)); //pid1_InputData[i];
+    int Y2 = int(inputHeight)-int(inputHeight*(pid1_InputData[i+1]-pid1_InScaleMin)/(pid1_InScaleMax-pid1_InScaleMin)); //InputData[i+1];
 
     y1Above = (Y1>inputHeight);                     // if both points are outside 
     y1Below = (Y1<0);                               // the min or max, don't draw the 
@@ -131,8 +131,8 @@ void drawGraph()
     //DRAW THE SETPOINT
     drawLine=true;
     stroke(0,255,0);
-    Y1 = int(inputHeight)-int(inputHeight*(SetpointData[i]-InScaleMin)/(InScaleMax-InScaleMin));// SetpointData[i];
-    Y2 = int(inputHeight)-int(inputHeight*(SetpointData[i+1]-InScaleMin)/(InScaleMax-InScaleMin)); //SetpointData[i+1];
+    Y1 = int(inputHeight)-int(inputHeight*(pid1_SetpointData[i]-pid1_InScaleMin)/(pid1_InScaleMax-pid1_InScaleMin));// pid1_SetpointData[i];
+    Y2 = int(inputHeight)-int(inputHeight*(pid1_SetpointData[i+1]-pid1_InScaleMin)/(pid1_InScaleMax-pid1_InScaleMin)); //pid1_SetpointData[i+1];
 
     y1Above = (Y1>(int)inputHeight);                // if both points are outside 
     y1Below = (Y1<0);                               // the min or max, don't draw the 
@@ -170,8 +170,8 @@ void drawGraph()
     //DRAW THE OUTPUT
     drawLine=true;
     stroke(0,0,255);
-    Y1 = int(outputHeight)-int(outputHeight*(OutputData[i]-OutScaleMin)/(OutScaleMax-OutScaleMin));// OutputData[i];
-    Y2 = int(outputHeight)-int(outputHeight*(OutputData[i+1]-OutScaleMin)/(OutScaleMax-OutScaleMin));//OutputData[i+1];
+    Y1 = int(outputHeight)-int(outputHeight*(pid1_OutputData[i]-pid1_OutScaleMin)/(pid1_OutScaleMax-pid1_OutScaleMin));// pid1_OutputData[i];
+    Y2 = int(outputHeight)-int(outputHeight*(pid1_OutputData[i+1]-pid1_OutScaleMin)/(pid1_OutScaleMax-pid1_OutScaleMin));//pid1_OutputData[i+1];
 
     y1Above = (Y1>outputHeight);                   // if both points are outside 
     y1Below = (Y1<0);                              // the min or max, don't draw the 
