@@ -69,166 +69,175 @@ void Disconnect()
 
 void Send_Dash()//To_Controller()
 {
-  float[] toSend = new float[4];
-  byte a = (pid1_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
-  byte b = (pid2_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  float[] TTC_Packet_0_Channels_0 = new float[4];
+  byte TTC_Packet_0_Frame_0 = 0;
   
   // PID 001
-  toSend[0] = float(pid1_SPField.getText());
-  toSend[1] = float(pid1_OutField.getText());
+  byte TTC_Packet_0_Frame_1 = (pid1_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[0] = float(pid1_SPField.getText());
+  TTC_Packet_0_Channels_0[1] = float(pid1_OutField.getText());
   
   // PID 002
-  toSend[2] = float(pid2_SPField.getText());
-  toSend[3] = float(pid2_OutField.getText());
-  
-
-  byte pid1_identifier = 0;
+  byte TTC_Packet_0_Frame_2 = (pid2_AMLabel.valueLabel().getText()=="Manual")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[2] = float(pid2_SPField.getText());
+  TTC_Packet_0_Channels_0[3] = float(pid2_OutField.getText());
     
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(b);
-  myPort.write(floatArrayToByteArray(toSend));
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(TTC_Packet_0_Frame_2);
+  myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0));
 
   
 } 
 
 void Send_Tunings()
 {
-  float[] toSend = new float[6];
-  byte a = (pid1_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
-  byte b = (pid2_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  float[] TTC_Packet_0_Channels_0 = new float[6];
+  byte TTC_Packet_0_Frame_0 = 1;
   
-  toSend[0] = float(pid1_PField.getText());
-  toSend[1] = float(pid1_IField.getText());
-  toSend[2] = float(pid1_DField.getText());
+  // PID 001
+  byte TTC_Packet_0_Frame_1 = (pid1_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[0] = float(pid1_PField.getText());
+  TTC_Packet_0_Channels_0[1] = float(pid1_IField.getText());
+  TTC_Packet_0_Channels_0[2] = float(pid1_DField.getText());
+  
+  // PID 002
+  byte TTC_Packet_0_Frame_2 = (pid2_DRLabel.valueLabel().getText()=="Direct")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[3] = float(pid2_PField.getText());
+  TTC_Packet_0_Channels_0[4] = float(pid2_IField.getText());
+  TTC_Packet_0_Channels_0[5] = float(pid2_DField.getText());
   
   
-  toSend[3] = float(pid2_PField.getText());
-  toSend[4] = float(pid2_IField.getText());
-  toSend[5] = float(pid2_DField.getText());
   
   
   
-  
-  byte pid1_identifier = 1;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(b);
-  myPort.write(floatArrayToByteArray(toSend));
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(TTC_Packet_0_Frame_2);
+  myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0));
 }
 
 void Send_Auto_Tune()
 {
-  float[] toSend = new float[6];
   
-  toSend[0] = float(pid1_oSField.getText());
-  toSend[1] = float(pid1_nField.getText());
-  toSend[2] = float(pid1_lbField.getText());
-  byte a = (pid1_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  byte TTC_Packet_0_Frame_0 = 2;                                                              
+    
+   
+  float[] TTC_Packet_0_Channels_0 = new float[6]; 
   
-  toSend[3] = float(pid2_oSField.getText());
-  toSend[4] = float(pid2_nField.getText());
-  toSend[5] = float(pid2_lbField.getText());
-  byte b = (pid2_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  // PID 001
+  byte TTC_Packet_0_Frame_1 = (pid1_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[0] = float(pid1_oSField.getText());  
+  TTC_Packet_0_Channels_0[1] = float(pid1_nField.getText()); 
+  TTC_Packet_0_Channels_0[2] = float(pid1_lbField.getText());
   
-  byte pid1_identifier = 2;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(b);
-  myPort.write(floatArrayToByteArray(toSend));
-}
+  // PID 002
+  byte TTC_Packet_0_Frame_2 = (pid2_ATLabel.valueLabel().getText()=="OFF")?(byte)0:(byte)1;
+  TTC_Packet_0_Channels_0[3] = float(pid2_oSField.getText());
+  TTC_Packet_0_Channels_0[4] = float(pid2_nField.getText());  
+  TTC_Packet_0_Channels_0[5] = float(pid2_lbField.getText()); 
 
-void Send_Configuration()//To_Controller()
+  myPort.write(TTC_Packet_0_Frame_0); // Status/Cmd Byte 0
+  myPort.write(TTC_Packet_0_Frame_1); // Status/Cmd Byte 1
+  myPort.write(TTC_Packet_0_Frame_2); // Status/Cmd Byte 2
+  myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0)); 
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//void Send_Configuration()//To_Controller()
+//{
+//  byte TTC_Packet_0_Frame_0 = 5;
+//  byte TTC_Packet_0_Frame_1 = 0;
+//    if(r2.getState(1)==true)TTC_Packet_0_Frame_1=1;
+//    else if(r2.getState(2)==true)TTC_Packet_0_Frame_1=2;
+//  byte TTC_Packet_0_Frame_2 = r3.getState(0)==true ? (byte)0 : (byte)1;
+//  
+//  float[] TTC_Packet_0_Channels_0 = new float[4];
+//  TTC_Packet_0_Channels_0[0] = float(R0Field.getText());
+//  TTC_Packet_0_Channels_0[1] = float(BetaField.getText());
+//  TTC_Packet_0_Channels_0[2] = float(T0Field.getText());
+//  TTC_Packet_0_Channels_0[3] = float(oSecField.getText());
+//  
+//      
+//  myPort.write(TTC_Packet_0_Frame_0);
+//  myPort.write(TTC_Packet_0_Frame_1);
+//  myPort.write(TTC_Packet_0_Frame_2);
+//  myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0));
+//} 
+void pid1_Run_Profile()
 {
 
-  float[] toSend = new float[4];
-  toSend[0] = float(R0Field.getText());
-  toSend[1] = float(BetaField.getText());
-  toSend[2] = float(T0Field.getText());
-  toSend[3] = float(oSecField.getText());
-
-  byte a =0;
-  if(r2.getState(1)==true)a=1;
-  else if(r2.getState(2)==true)a=2;
-
-  byte o = r3.getState(0)==true ? (byte)0 : (byte)1;
-
-  byte pid1_identifier = 5;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(o);
-  myPort.write(floatArrayToByteArray(toSend));
-} 
-void Run_Profile()
-{
-
-  byte pid1_identifier = 6;
-  byte a = 1;
-  byte b = 1;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(b);
+  byte TTC_Packet_0_Frame_0 = 6;
+  byte TTC_Packet_0_Frame_1 = 1;
+  byte TTC_Packet_0_Frame_2 = 1;
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(TTC_Packet_0_Frame_2);
 }
-void Stop_Profile()
+void pid1_Stop_Profile()
 {
-  byte pid1_identifier = 6;
-  byte a = 0;
-  byte b = 0;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(b);
+  byte TTC_Packet_0_Frame_0 = 6;
+  byte TTC_Packet_0_Frame_1 = 0;
+  byte TTC_Packet_0_Frame_2 = 0;
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(TTC_Packet_0_Frame_2);
 }
 
-void Send_Profile()
+void pid1_Send_Profile()
 {
-  currentxferStep=0;
-  byte pid1_identifier=4;
-  byte a=15;
-  myPort.write(pid1_identifier);
-  myPort.write(a);
-  myPort.write(currentxferStep);
-  SendProfileStep(byte(currentxferStep));
+  pid1_CurrentTxferStep=0;
+    
+  byte TTC_Packet_0_Frame_0=4;
+  byte TTC_Packet_0_Frame_1=15;
+  
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(pid1_CurrentTxferStep);
+  pid1_SendProfileStep(byte(pid1_CurrentTxferStep));
 }
-int currentxferStep=-1;
+int pid1_CurrentTxferStep=-1;
 
-void SendProfileStep(byte step)
+void pid1_SendProfileStep(byte step)
 {
   Profile p = profs[curProf];
-  float[] toSend = new float[2];
-  toSend[0] = p.vals[step];
-  toSend[1] = p.times[step];
-  myPort.write(floatArrayToByteArray(toSend));
+  float[] TTC_Packet_0_Channels_0 = new float[2];
+  TTC_Packet_0_Channels_0[0] = p.vals[step];
+  TTC_Packet_0_Channels_0[1] = p.times[step];
+  myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0));
 }
 
-void SendProfileName()
+void pid1_SendProfileName()
 {
-  byte pid1_identifier=7;
+  byte TTC_Packet_0_Frame_0=7;
 
 
-  byte[] toSend = new byte[9];
+  byte[] TTC_Packet_0_Channels_0 = new byte[9];
 
-  toSend[0] = pid1_identifier;
-  toSend[1] = byte(currentxferStep);
+  TTC_Packet_0_Channels_0[0] = TTC_Packet_0_Frame_0;
+  TTC_Packet_0_Channels_0[1] = byte(pid1_CurrentTxferStep);
   try
   {
     byte[] n = profs[curProf].Name.getBytes();
     int copylen = n.length>7? 7:n.length;
-    for(int i=0;i<7;i++) toSend[i+2] = i<copylen? n[i] : 32;
+    for(int i=0;i<7;i++) TTC_Packet_0_Channels_0[i+2] = i<copylen? n[i] : 32;
 
   }
   catch(Exception ex)
   {
     print(ex.toString());
   }
-  myPort.write(toSend);
+  myPort.write(TTC_Packet_0_Channels_0);
 }
 
 void Reset_Factory_Defaults()
 {
-  Byte pid1_identifier = 3;
-  myPort.write(pid1_identifier);
-  myPort.write((byte)9);
-  myPort.write((byte)8); 
+  Byte TTC_Packet_0_Frame_0 = 3;
+  Byte TTC_Packet_0_Frame_1 = 9;
+  Byte TTC_Packet_0_Frame_2 = 8;
+  
+  myPort.write(TTC_Packet_0_Frame_0);
+  myPort.write(TTC_Packet_0_Frame_1);
+  myPort.write(TTC_Packet_0_Frame_2); 
 }
 
 byte[] floatArrayToByteArray(float[] input)
@@ -442,9 +451,9 @@ void serialEvent(Serial myPort)
     String[] profInfo = new String[]{
       "Transferring Profile","Step "+s[1]+" successful"            };
     poulateStat(profInfo);
-    currentxferStep = int(s[1])+1;
-    if(currentxferStep<pSteps) SendProfileStep(byte(currentxferStep));
-    else if(currentxferStep>=pSteps) SendProfileName();
+    pid1_CurrentTxferStep = int(s[1])+1;
+    if(pid1_CurrentTxferStep<pSteps) pid1_SendProfileStep(byte(pid1_CurrentTxferStep));
+    else if(pid1_CurrentTxferStep>=pSteps) pid1_SendProfileName();
 
   }
   else if(s[0].equals("ProfDone"))
@@ -453,7 +462,7 @@ void serialEvent(Serial myPort)
     String[] profInfo = new String[]{
       "Profile Transfer","Profile Sent Successfully"        };
     poulateStat(profInfo);
-    currentxferStep=0;
+    pid1_CurrentTxferStep=0;
   }
   else if(s[0].equals("ProfError"))
   {

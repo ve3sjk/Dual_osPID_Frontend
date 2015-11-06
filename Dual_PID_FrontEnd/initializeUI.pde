@@ -60,7 +60,7 @@ void populateDashTab()
   //dasboard
 
   // PID 001
-  pid1_AMButton = controlP5.addButton("pid1_Toggle_AM",0.0,dashLeft,dashTop,60,20);      //
+  pid1_AMButton = controlP5.addButton("pid1_T_AM",0.0,dashLeft,dashTop,60,20);      //
   pid1_AMLabel = controlP5.addTextlabel("pid1_AM","Manual",dashLeft+4,dashTop+22);        //
   pid1_SPField= controlP5.addTextfield("pid1_Setpoint",dashLeft,dashTop+40,60,20);         //   Buttons, Labels, and
   pid1_InField = controlP5.addTextfield("pid1_Input",dashLeft,dashTop+80,60,20);           //   Text Fields we'll be
@@ -72,7 +72,7 @@ void populateDashTab()
   
   
   // PID 002
-  pid2_AMButton = controlP5.addButton("pid2_Toggle_AM",0.0,dashLeft,dashTop+180,60,20);      //
+  pid2_AMButton = controlP5.addButton("pid2_T_AM",0.0,dashLeft,dashTop+180,60,20);      //
   pid2_AMLabel = controlP5.addTextlabel("pid2_AM","Manual",dashLeft+4,dashTop+202);            //
   pid2_SPField = controlP5.addTextfield("pid2_Setpoint",dashLeft,dashTop+220,60,20);         //   Buttons, Labels, and
   pid2_InField = controlP5.addTextfield("pid2_Input",dashLeft,dashTop+260,60,20);           //   Text Fields we'll be
@@ -103,10 +103,10 @@ void populateTuneTab()
   
   //PID 001
     
-  pid1_PField = controlP5.addTextfield("pid1_Kp (Proportional)",tuneLeft,tuneTop,60,20);          //
-  pid1_IField = controlP5.addTextfield("pid1_Ki (Integral)",tuneLeft,tuneTop+40,60,20);          //
-  pid1_DField = controlP5.addTextfield("pid1_Kd (Derivative)",tuneLeft,tuneTop+80,60,20);          //
-  pid1_DRButton = controlP5.addButton("pid1_Toggle_DR",0.0,tuneLeft,tuneTop+120,60,20);      //
+  pid1_PField = controlP5.addTextfield("pid1_Kp",tuneLeft,tuneTop,60,20);          //
+  pid1_IField = controlP5.addTextfield("pid1_Ki",tuneLeft,tuneTop+40,60,20);          //
+  pid1_DField = controlP5.addTextfield("pid1_Kd",tuneLeft,tuneTop+80,60,20);          //
+  pid1_DRButton = controlP5.addButton("pid1_T_DR",0.0,tuneLeft,tuneTop+120,60,20);      //
   pid1_DRLabel = controlP5.addTextlabel("pid1_DR","Direct",tuneLeft+2,tuneTop+144);
   pid1_PLabel=controlP5.addTextlabel("pid1_P","4",tuneLeft+70,tuneTop+3);                    //
   pid1_ILabel=controlP5.addTextlabel("pid1_I","5",tuneLeft+70,tuneTop+43);                    //
@@ -114,10 +114,10 @@ void populateTuneTab()
   pid1_DRCurrent = controlP5.addTextlabel("pid1_DRCurrent","Direct",tuneLeft+70,tuneTop+123);   //
       
   //PID 002
-  pid2_PField = controlP5.addTextfield("pid2_Kp (Proportional)",tuneLeft,tuneTop+200,60,20);          //
-  pid2_IField = controlP5.addTextfield("pid2_Ki (Integral)",tuneLeft,tuneTop+240,60,20);          //
-  pid2_DField = controlP5.addTextfield("pid2_Kd (Derivative)",tuneLeft,tuneTop+280,60,20);          //
-  pid2_DRButton = controlP5.addButton("pid2_Toggle_DR",0.0,tuneLeft,tuneTop+320,60,20);      //
+  pid2_PField = controlP5.addTextfield("pid2_Kp",tuneLeft,tuneTop+200,60,20);          //
+  pid2_IField = controlP5.addTextfield("pid2_Ki",tuneLeft,tuneTop+240,60,20);          //
+  pid2_DField = controlP5.addTextfield("pid2_Kd",tuneLeft,tuneTop+280,60,20);          //
+  pid2_DRButton = controlP5.addButton("pid2_T_DR",0.0,tuneLeft,tuneTop+320,60,20);      //
   pid2_DRLabel = controlP5.addTextlabel("pid2_DR","Direct",tuneLeft+2,tuneTop+344);            //
   pid2_PLabel=controlP5.addTextlabel("pid2_P","7",tuneLeft+70,tuneTop+203);                    //
   pid2_ILabel=controlP5.addTextlabel("pid2_I","8",tuneLeft+70,tuneTop+243);                    //
@@ -155,10 +155,10 @@ void populateTuneTab()
   //Autotune
   
   //PID 001
-  pid1_oSField = controlP5.addTextfield("pid1_Output Step",ATLeft,ATTop,60,20);          //
-  pid1_nField = controlP5.addTextfield("pid1_Noise Band",ATLeft,ATTop+40,60,20);          //
-  pid1_lbField = controlP5.addTextfield("pid1_Look Back",ATLeft,ATTop+80,60,20);          //
-  pid1_ATButton = controlP5.addButton("pid1_ATune_CMD",0.0,ATLeft,ATTop+120,60,20);      //
+  pid1_oSField = controlP5.addTextfield("pid1_OS",ATLeft,ATTop,60,20);          //
+  pid1_nField = controlP5.addTextfield("pid1_NB",ATLeft,ATTop+40,60,20);          //
+  pid1_lbField = controlP5.addTextfield("pid1_LB",ATLeft,ATTop+80,60,20);          //
+  pid1_ATButton = controlP5.addButton("pid1_AT_CMD",0.0,ATLeft,ATTop+120,60,20);      //
   pid1_ATLabel = controlP5.addTextlabel("pid1_ATune","OFF",ATLeft+2,ATTop+142);            //
 
   pid1_oSLabel=controlP5.addTextlabel("pid1_oStep","4",ATLeft+70,ATTop+3);                    //
@@ -168,10 +168,10 @@ void populateTuneTab()
   
   
   //PID --2
-  pid2_oSField = controlP5.addTextfield("pid2_Output Step",ATLeft,ATTop+180,60,20);          //
-  pid2_nField = controlP5.addTextfield("pid2_Noise Band",ATLeft,ATTop+220,60,20);          //
-  pid2_lbField = controlP5.addTextfield("pid2_Look Back",ATLeft,ATTop+260,60,20);          //
-  pid2_ATButton = controlP5.addButton("pid2_ATune_CMD",0.0,ATLeft,ATTop+300,60,20);      //
+  pid2_oSField = controlP5.addTextfield("pid2_OS",ATLeft,ATTop+180,60,20);          //
+  pid2_nField = controlP5.addTextfield("pid2_NB",ATLeft,ATTop+220,60,20);          //
+  pid2_lbField = controlP5.addTextfield("pid2_LB",ATLeft,ATTop+260,60,20);          //
+  pid2_ATButton = controlP5.addButton("pid2_AT_CMD",0.0,ATLeft,ATTop+300,60,20);      //
   pid2_ATLabel = controlP5.addTextlabel("pid2_ATune","OFF",ATLeft+2,ATTop+324);            //
 
   pid2_oSLabel=controlP5.addTextlabel("pid2_oStep","7",ATLeft+70,ATTop+183);                    //
@@ -236,12 +236,12 @@ void populatePrefTab()
 void populateProfileTab(){
  LBPref = controlP5.addListBox("Available Profiles",configLeft,configTop+5,160,120);
  controlP5.addTextlabel("spec4","Currently Displaying: ", configLeft+5,configTop+10+15*profs.length);
- ProfButton = controlP5.addButton("Send_Profile",0.0,configLeft,configTop+25+15*profs.length,160,20);
+ ProfButton = controlP5.addButton("pid1_Send_Profile",0.0,configLeft,configTop+25+15*profs.length,160,20);
 
 
  int profStatTop = configTop+490;
-  ProfCmd = controlP5.addButton("Run_Profile",0.0,configLeft,profStatTop-40,160,20);
-  ProfCmdStop = controlP5.addButton("Stop_Profile",0.0,configLeft,profStatTop-40,160,20);
+  ProfCmd = controlP5.addButton("pid1_Run_Profile",0.0,configLeft,profStatTop-40,160,20);
+  ProfCmdStop = controlP5.addButton("pid1_Stop_Profile",0.0,configLeft,profStatTop-40,160,20);
   ProfCmdStop.setVisible(false);
  for(int i=0;i<6;i++)
  { 

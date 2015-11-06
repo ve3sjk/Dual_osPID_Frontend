@@ -89,26 +89,28 @@ void setup()
 {
   size(100, 100);
   frameRate(30);
+  reader = createReader("prefs.txt");
 
   //read in preferences
   prefs = new String[] {
     "Form Width", "Form Height", "pid1_Input Scale Minimum","pid1_Input Scale Maximum","pid1_Output Scale Minimum","pid1_Output Scale Maximum", "Time Span (Min)"        };   
   prefVals = new float[] {
     windowWidth, windowHeight, pid1_InScaleMin, pid1_InScaleMax, pid1_OutScaleMin, pid1_OutScaleMax, windowSpan / 1000 / 60        };
-//  try
-//  {
-//    reader = createReader("prefs.txt");
+////  try
+////  {
 //    if(reader!=null)
 //    {
 //      for(int i=0;i<prefVals.length;i++)prefVals[i] = float(reader.readLine());
 //    } 
-//  }
-//  catch(FileNotFoundException  ex)  {    
-//    println("here2");   
-//  }
-//  catch(IOException ex)  {    
-//    println("here3");   
-//  }
+////  }
+////  catch(FileNotFoundException  ex)  {    
+////    println("here2");   
+////  }
+////  catch(IOException ex)  {    
+////    println("here3");   
+////  }
+ 
+  
 
   PrefsToVals(); //read pref array into global variables
 
@@ -197,6 +199,7 @@ void PrefsToVals()
   ioRight = ioLeft+ioWidth;
 
   arrayLength = windowSpan / refreshRate+1;
+  
   pid1_InputData = (float[])resizeArray(pid1_InputData,arrayLength);
   pid1_SetpointData = (float[])resizeArray(pid1_SetpointData,arrayLength);
   pid1_OutputData = (float[])resizeArray(pid1_OutputData,arrayLength); 
@@ -243,7 +246,7 @@ void Save_Preferences()
   PrintWriter output;
   try
   {
-    output = createWriter("prefs1.txt");
+    output = createWriter("prefs.txt");
     for(int i=0;i<prefVals.length;i++) output.println(prefVals[i]);
     output.flush();
     output.close();
@@ -258,15 +261,15 @@ void Nullify()
 {
 
   String[] names = {
-    "pid1_AM", "pid1_Setpoint", "pid1_Input", "pid1_Output", "pid1_AMCurrent", "pid1_SP", "pid1_In", "pid1_Out", "pid1_Kp (Proportional)",
-    "pid1_Ki (Integral)","pid1_Kd (Derivative)","pid1_DR","pid1_P","pid1_I","pid1_D","pid1_DRCurrent",
-    "pid1_Noise Band","pid1_ATune","pid1_oStep","pid1_noise","pid1_ATuneCurrent","pid1_Look Back","pid1_lback"  }; //,"  "," ","","pid1_Output Step","   ",
+    "pid1_AM", "pid1_Setpoint", "pid1_Input", "pid1_Output", "pid1_AMCurrent", "pid1_SP", "pid1_In", "pid1_Out", "pid1_Kp",
+    "pid1_Ki","pid1_Kd","pid1_DR","pid1_P","pid1_I","pid1_D","pid1_DRCurrent",
+    "pid1_NB","pid1_ATune","pid1_OS","pid1_noise","pid1_ATuneCurrent","pid1_LB","pid1_lback"  }; //,"  "," ","","pid1_Output Step","   ",
   for(int i=0;i<names.length;i++)controlP5.controller(names[i]).setValueLabel("---");
   
   String[] names2 = {
-    "pid2_AM", "pid2_Setpoint", "pid1_Input", "pid2_Output", "pid2_AMCurrent", "pid2_SP", "pid2_In", "pid2_Out", "pid2_Kp (Proportional)",
-    "pid2_Ki (Integral)","pid2_Kd (Derivative)","pid2_DR","pid2_P","pid2_I","pid2_D","pid2_DRCurrent",
-    "pid2_Noise Band","pid2_ATune","pid2_oStep","pid2_noise","pid2_ATuneCurrent","pid2_Look Back","pid2_lback"  }; //,"  "," ","","pid2_Output Step","   ",
+    "pid2_AM", "pid2_Setpoint", "pid1_Input", "pid2_Output", "pid2_AMCurrent", "pid2_SP", "pid2_In", "pid2_Out", "pid2_Kp",
+    "pid2_Ki","pid2_Kd","pid2_DR","pid2_P","pid2_I","pid2_D","pid2_DRCurrent",
+    "pid2_NB","pid2_ATune","pid2_OS","pid2_noise","pid2_ATuneCurrent","pid2_LB","pid2_lback"  }; //,"  "," ","","pid2_Output Step","   ",
   for(int i=0;i<names2.length;i++)controlP5.controller(names2[i]).setValueLabel("---");
   
   
@@ -319,7 +322,7 @@ void drawButtonArea()
 
 }
 
-void pid1_Toggle_AM() {
+void pid1_T_AM() {
   if(pid1_AMLabel.valueLabel().getText()=="Manual") 
   {
     pid1_AMLabel.setValue("Automatic");
@@ -330,7 +333,7 @@ void pid1_Toggle_AM() {
   }
 }
 
-void pid2_Toggle_AM() {
+void pid2_T_AM() {
   if(pid2_AMLabel.valueLabel().getText()=="Manual") 
   {
     pid2_AMLabel.setValue("Automatic");
@@ -341,7 +344,7 @@ void pid2_Toggle_AM() {
   }
 }
 
-void pid1_Toggle_DR() {
+void pid1_T_DR() {
   if(pid1_DRLabel.valueLabel().getText()=="Direct") 
   {
     pid1_DRLabel.setValue("Reverse");
@@ -352,7 +355,7 @@ void pid1_Toggle_DR() {
   }
 }
 
-void pid2_Toggle_DR() {
+void pid2_T_DR() {
   if(pid2_DRLabel.valueLabel().getText()=="Direct") 
   {
     pid2_DRLabel.setValue("Reverse");
