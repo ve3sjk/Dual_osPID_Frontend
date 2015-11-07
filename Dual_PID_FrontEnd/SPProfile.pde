@@ -8,42 +8,42 @@ class Profile
   public String errorMsg="";
   public String Name="";
 }
-Profile profs[];
-int curProf=-1;
+Profile pid1_profs[];
+int pid1_curProf=-1;
 
 int lastReceiptTime=-1000;
-String profname="";
-int curProfStep=-1;
+String pid1_profname="";
+int pid1_curProfStep=-1;
 
 
-void ProfileRunTime()
+void pid1_ProfileRunTime()
 {
 
   if (lastReceiptTime+3000<millis())
   {
     for(int i=0;i<6;i++)
     { 
-      ((controlP5.Textlabel)controlP5.controller("profstat"+i)).setValue("");
+      ((controlP5.Textlabel)controlP5.controller("pid1_profstat"+i)).setValue("");
       ((controlP5.Textlabel)controlP5.controller("dashstat"+i)).setValue("");
-      curProfStep=-1;
-          ProfCmd.setVisible(true);
-    ProfCmdStop.setVisible(false);
+      pid1_curProfStep=-1;
+          pid1_ProfCmd.setVisible(true);
+    pid1_ProfCmdStop.setVisible(false);
     } 
 
   }
 }
 
 
-void ReadProfiles(String directory)
+void pid1_ReadProfiles(String directory)
 {
   //get all text files in the directory 
   String[] files = listFileNames(directory);
-  profs = new Profile[files.length];
+  pid1_profs = new Profile[files.length];
   for(int i=0;i<files.length;i++)
   {
-    profs[i] = CreateProfile(directory+ File.separator +files[i]); 
+    pid1_profs[i] = CreateProfile(directory+ File.separator +files[i]); 
   }
-  if(profs.length>0)curProf=0;
+  if(pid1_profs.length>0)pid1_curProf=0;
 }
 
 String[] listFileNames(String dir) {
@@ -116,7 +116,7 @@ Profile CreateProfile(String filename)
 }
 
 
-void DrawProfile(Profile p, float x, float y, float w, float h)
+void DrawProfile(Profile pid1_p, float x, float y, float w, float h)
 {
   //if(p==null)return; 
   float step = w/(float)pSteps;
@@ -125,10 +125,10 @@ textFont(AxisFont);
   float minimum = 100000000,maximum=-10000000;
   for(int i=0;i<pSteps;i++)
   {
-    byte t = p.types[i];
+    byte t = pid1_p.types[i];
     if(t==1 || t== 3)
     {
-      float v = p.vals[i];
+      float v = pid1_p.vals[i];
       if(v<minimum)minimum=v;
       if(v>maximum)maximum=v;
     }
@@ -146,17 +146,17 @@ textFont(AxisFont);
   for(int i=0;i<pSteps;i++)
   {
 
-    if(i==curProfStep && (millis() % 2000<1000))stroke(255,0,0);
+    if(i==pid1_curProfStep && (millis() % 2000<1000))stroke(255,0,0);
     else stroke(255);
     
-    byte t = p.types[i];
-    float v = bottom - (p.vals[i]-minimum)/(maximum-minimum) * h;
+    byte t = pid1_p.types[i];
+    float v = bottom - (pid1_p.vals[i]-minimum)/(maximum-minimum) * h;
     float x1 = x+step*(float)i;
     float x2 = x+step*(float)(i+1);
     if(t==1)//Ramp
     {
       line(x1,lasty, x2,v);
-      text(p.vals[i],x2,v-4);
+      text(pid1_p.vals[i],x2,v-4);
       lasty=v;
     }
     else if(t==2)//Wait
@@ -170,7 +170,7 @@ textFont(AxisFont);
       line(x1,lasty, x1,v);
       line(x1,v, x2,v);
       lasty=v;
-      text(p.vals[i],x1,lasty-4);
+      text(pid1_p.vals[i],x1,lasty-4);
     }
     else if(t==127)//Buzz
     {
@@ -192,8 +192,8 @@ textFont(AxisFont);
   float lastv = 999;
   for(int i=0;i<pSteps; i++)
   {
-    byte t = p.types[i];
-    float v = p.vals[i];
+    byte t = pid1_p.types[i];
+    float v = pid1_p.vals[i];
     String s1="",s2="", s3="";
 
     if(t==0)//end
@@ -203,7 +203,7 @@ break;
     if(t==1)//Ramp
     {
       s1 = "Ramp SP to " + v; 
-      s2 = "Over " + p.times[i] + " Sec";
+      s2 = "Over " + pid1_p.times[i] + " Sec";
     }
     else if (t==2 && v==0) //Wait cross
     {
@@ -214,16 +214,16 @@ break;
     {
       s1 = "Wait until Input is"; 
       s2="Within "+v+ " of " + lastv;
-      s3= "for "+p.times[i] +" Sec";
+      s3= "for "+pid1_p.times[i] +" Sec";
     }
     else if(t==3)
     {
       s1 = "Step SP to "+ v +" then"; 
-      s2="wait " + p.times[i] + " Sec";
+      s2="wait " + pid1_p.times[i] + " Sec";
     }
     else if(t==127)
     {
-      s1 = "Buzz for " + p.times[i] + " Sec"; 
+      s1 = "Buzz for " + pid1_p.times[i] + " Sec"; 
     }
     else
     { //unrecognized
@@ -241,10 +241,10 @@ break;
 
   rotate(90*PI/180);
 
-  textFont(ProfileFont);
+  textFont(pid1_ProfileFont);
   for(int i=0;i<pSteps; i++)
   {
-    byte t = p.types[i];
+    byte t = pid1_p.types[i];
     if(t==0)//end
     {
       break;
@@ -253,11 +253,11 @@ break;
   }
 
 
-  if(p.errorMsg!="")
+  if(pid1_p.errorMsg!="")
   {
 
     fill(255,0,0);
-    text(p.errorMsg, ioLeft, inputTop);
+    text(pid1_p.errorMsg, ioLeft, inputTop);
     fill(0);
 
   }

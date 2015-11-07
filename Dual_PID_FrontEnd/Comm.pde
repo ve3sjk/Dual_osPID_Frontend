@@ -199,10 +199,10 @@ int pid1_CurrentTxferStep=-1;
 
 void pid1_SendProfileStep(byte step)
 {
-  Profile p = profs[curProf];
+  Profile pid1_p = pid1_profs[pid1_curProf];
   float[] TTC_Packet_0_Channels_0 = new float[2];
-  TTC_Packet_0_Channels_0[0] = p.vals[step];
-  TTC_Packet_0_Channels_0[1] = p.times[step];
+  TTC_Packet_0_Channels_0[0] = pid1_p.vals[step];
+  TTC_Packet_0_Channels_0[1] = pid1_p.times[step];
   myPort.write(floatArrayToByteArray(TTC_Packet_0_Channels_0));
 }
 
@@ -217,7 +217,7 @@ void pid1_SendProfileName()
   TTC_Packet_0_Channels_0[1] = byte(pid1_CurrentTxferStep);
   try
   {
-    byte[] n = profs[curProf].Name.getBytes();
+    byte[] n = pid1_profs[pid1_curProf].Name.getBytes();
     int copylen = n.length>7? 7:n.length;
     for(int i=0;i<7;i++) TTC_Packet_0_Channels_0[i+2] = i<copylen? n[i] : 32;
 
@@ -307,6 +307,9 @@ void serialEvent(Serial myPort)
     madeContact=true;
   }
   if(!madeContact) return;
+  
+  
+  
   if(s.length==16 && s[0].equals("DASH"))
   {
 
@@ -409,67 +412,67 @@ void serialEvent(Serial myPort)
 
 
   }
-  else if( s.length>3 && s[0].equals("PROF"))
+  else if( s.length>3 && s[0].equals("pid1_PROF"))
   {
     lastReceiptTime=millis();
-    int curType = int(trim(s[2]));
-    curProfStep = int(s[1]);
-    ProfCmd.setVisible(false);
-    ProfCmdStop.setVisible(true);
-    String[] msg;
-    switch(curType)
+    pid1_curProfStep = int(trim(s[1]));
+    int pid1_curType = int(trim(s[2]));
+    pid1_ProfCmd.setVisible(false);
+    pid1_ProfCmdStop.setVisible(true);
+    String[] pid1_msg;
+    switch(pid1_curType)
     {
-    case 1: //ramp
-      msg = new String[]{
-        "Running Profile", "", "Step="+s[1]+", Ramping Setpoint", float(trim(s[3]))/1000+" Sec remaining"            };
+    case 1: //pid1_ramp
+      pid1_msg = new String[]{
+        "pid1_Running Profile", "", "pid1_Step="+s[1]+", pid1_Ramping Setpoint", float(trim(s[3]))/1000+" Sec remaining"            };
       break;
-    case 2: //wait
-      float helper = float(trim(s[4]));
-      msg = new String[]{
-        "Running Profile", "","Step="+s[1]+", Waiting","Distance Away= "+s[3],(helper<0? "Waiting for cross" :("Time in band= "+helper/1000+" Sec" ))            };
+    case 2: //pid1_wait
+      float pid1_helper = float(trim(s[4]));
+      pid1_msg = new String[]{
+        "pid1_Running Profile", "","pid1_Step="+s[1]+", Waiting","Distance Away= "+s[3],(pid1_helper<0? "Waiting for cross" :("Time in band= "+pid1_helper/1000+" Sec" ))            };
       break;
-    case 3: //step
-      msg = new String[]{
-        "Running Profile", "","Step="+s[1]+", Stepped Setpoint"," Waiting for "+ float(trim(s[3]))/1000+" Sec"            };
+    case 3: //pid1_step
+      pid1_msg = new String[]{
+        "pid1_Running Profile", "","pid1_Step="+s[1]+", pid1_Stepped Setpoint"," Waiting for "+ float(trim(s[3]))/1000+" Sec"            };
       break;
 
     default:
-      msg = new String[0];
+      pid1_msg = new String[0];
       break;
     }
-    poulateStat(msg);
+    poulateStat(pid1_msg);
   }
-  else if(trim(s[0]).equals("P_DN"))
+  else if(trim(s[0]).equals("pid1_P_DN"))
   {
     lastReceiptTime = millis()-10000;
-    ProfileRunTime();
+    pid1_ProfileRunTime();
   }
 
-  if(s.length==5 && s[0].equals("ProfAck"))
+  if(s.length==5 && s[0].equals("pid1_ProfAck"))
   {
     lastReceiptTime=millis();
-    String[] profInfo = new String[]{
-      "Transferring Profile","Step "+s[1]+" successful"            };
-    poulateStat(profInfo);
+    String[] pid1_profInfo = new String[]{
+      "pid1_Transferring Profile","pid1_Step "+s[1]+" pid1_successful"            };
+    poulateStat(pid1_profInfo);
     pid1_CurrentTxferStep = int(s[1])+1;
     if(pid1_CurrentTxferStep<pSteps) pid1_SendProfileStep(byte(pid1_CurrentTxferStep));
     else if(pid1_CurrentTxferStep>=pSteps) pid1_SendProfileName();
 
   }
-  else if(s[0].equals("ProfDone"))
+  else if(s[0].equals("pid1_ProfDone"))
   {
     lastReceiptTime=millis()+7000;//extra display time
-    String[] profInfo = new String[]{
-      "Profile Transfer","Profile Sent Successfully"        };
-    poulateStat(profInfo);
+    String[] pid1_profInfo = new String[]{
+      "pid1_Profile Transfer","pid1_Profile Sent Successfully"        };
+    poulateStat(pid1_profInfo);
     pid1_CurrentTxferStep=0;
   }
-  else if(s[0].equals("ProfError"))
+  else if(s[0].equals("pid1_ProfError"))
   {
     lastReceiptTime=millis()+7000;//extra display time
-    String[] profInfo = new String[]{
-      "Profile Transfer","Error Sending Profile"            };
-    poulateStat(profInfo);
+    String[] pid1_profInfo = new String[]{
+      "pid1_Profile Transfer","pid1_Error Sending Profile"            };
+    poulateStat(pid1_profInfo);
   }
 }
 
@@ -478,7 +481,7 @@ void poulateStat(String[] msg)
   for(int i=0;i<6;i++)
   {
     ((controlP5.Textlabel)controlP5.controller("dashstat"+i)).setValue(i<msg.length?msg[i]:"");
-    ((controlP5.Textlabel)controlP5.controller("profstat"+i)).setValue(i<msg.length?msg[i]:"");
+    ((controlP5.Textlabel)controlP5.controller("pid1_profstat"+i)).setValue(i<msg.length?msg[i]:"");
   }
 }
 

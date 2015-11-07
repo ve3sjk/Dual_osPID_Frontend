@@ -60,10 +60,10 @@ boolean madeContact =false;
 Serial myPort;
 
 ControlP5 controlP5;
-controlP5.Button pid1_AMButton, pid2_AMButton, pid1_DRButton, pid2_DRButton, pid1_ATButton, pid2_ATButton, ConnectButton, DisconnectButton, ProfButton, ProfCmd, ProfCmdStop;
-controlP5.Textlabel pid1_AMLabel, pid2_AMLabel, pid1_AMCurrent, pid2_AMCurrent, pid1_INLabel, pid2_INLabel, pid1_OutLabel, pid2_OutLabel, pid1_SPLabel, pid2_SPLabel, pid1_PLabel, pid2_PLabel, pid1_ILabel, pid2_ILabel, pid1_DLabel, pid2_DLabel, pid1_DRLabel, pid2_DRLabel, pid1_DRCurrent, pid2_DRCurrent, pid1_ATLabel, pid2_ATLabel, pid1_oSLabel, pid2_oSLabel, pid1_InLabel, pid2_InLabel, pid1_ATCurrent, pid2_ATCurrent, Connecting, pid1_nLabel, pid2_nLabel, pid1_lbLabel, pid2_lbLabel, profSelLabel, commconfigLabel1, commconfigLabel2;
+controlP5.Button pid1_AMButton, pid2_AMButton, pid1_DRButton, pid2_DRButton, pid1_ATButton, pid2_ATButton, ConnectButton, DisconnectButton, pid1_ProfButton, pid1_ProfCmd, pid1_ProfCmdStop;
+controlP5.Textlabel pid1_AMLabel, pid2_AMLabel, pid1_AMCurrent, pid2_AMCurrent, pid1_INLabel, pid2_INLabel, pid1_OutLabel, pid2_OutLabel, pid1_SPLabel, pid2_SPLabel, pid1_PLabel, pid2_PLabel, pid1_ILabel, pid2_ILabel, pid1_DLabel, pid2_DLabel, pid1_DRLabel, pid2_DRLabel, pid1_DRCurrent, pid2_DRCurrent, pid1_ATLabel, pid2_ATLabel, pid1_oSLabel, pid2_oSLabel, pid1_InLabel, pid2_InLabel, pid1_ATCurrent, pid2_ATCurrent, Connecting, pid1_nLabel, pid2_nLabel, pid1_lbLabel, pid2_lbLabel, pid1_profSelLabel, commconfigLabel1, commconfigLabel2;
 RadioButton r1,r2,r3; 
-ListBox LBPref;
+ListBox pid1_LBPref;
 String[] CommPorts;
 String[] prefs;
 float[] prefVals;
@@ -72,7 +72,7 @@ pid1_PField, pid2_PField, pid1_IField, pid2_IField, pid1_DField, pid2_DField, pi
 pid1_nField, pid2_nField, T0Field, R0Field, BetaField, pid1_lbField, pid2_lbField, oSecField;
 String pHold="", iHold="", dHold="";
 PrintWriter output;
-PFont AxisFont, TitleFont, ProfileFont; 
+PFont AxisFont, TitleFont, pid1_ProfileFont; 
 
 int dashTop = 200, dashLeft = 10, dashW=160, dashH=380; 
 int tuneTop = 100, tuneLeft = 10, tuneW=160, tuneH=380;
@@ -115,8 +115,8 @@ void setup()
   PrefsToVals(); //read pref array into global variables
 
   String curDir = sketchPath;
-  ReadProfiles(curDir+ File.separator + "profiles");
-
+  pid1_ReadProfiles(curDir+ File.separator + "pid1_profiles");
+//  pid2_ReadProfiles(curDir+ File.separator + "pid2_profiles");
 
 
   controlP5 = new ControlP5(this);                                  // * Initialize the various
@@ -126,12 +126,14 @@ void setup()
   populateDashTab();
   populateTuneTab();
   populateConfigTab();
+  
   populatePrefTab();
-  populateProfileTab();
+  
+  pid1_populateProfileTab();
 
   AxisFont = loadFont("axis.vlw");
   TitleFont = loadFont("Titles.vlw");
-  ProfileFont = loadFont("profilestep.vlw");
+  pid1_ProfileFont = loadFont("pid1_profilestep.vlw");
 
   //blank out data fields since we're not connected
   Nullify();
@@ -143,7 +145,7 @@ void setup()
 
 void draw()
 {
-  ProfileRunTime();
+  pid1_ProfileRunTime();
 
   background(200);
 
@@ -151,7 +153,7 @@ void draw()
 
   drawButtonArea();
   AdvanceData();
-  if(currentTab==5 && curProf>-1)DrawProfile(profs[curProf], ioLeft+4, inputTop, ioWidth-1 , inputHeight);
+  if(currentTab==5 && pid1_curProf>-1)DrawProfile(pid1_profs[pid1_curProf], ioLeft+4, inputTop, ioWidth-1 , inputHeight);
   else drawGraph();
 
 }
@@ -166,8 +168,8 @@ void controlEvent(ControlEvent theControlEvent) {
   }
   else if(theControlEvent.isGroup() && theControlEvent.group().name()=="Available Profiles")
   {// a list item was clicked
-    curProf=(int)theControlEvent.group().value();
-    profSelLabel.setValue(profs[curProf].Name);
+    pid1_curProf=(int)theControlEvent.group().value();
+    pid1_profSelLabel.setValue(pid1_profs[pid1_curProf].Name);
   }
 }
 
@@ -263,13 +265,13 @@ void Nullify()
   String[] names = {
     "pid1_AM", "pid1_Setpoint", "pid1_Input", "pid1_Output", "pid1_AMCurrent", "pid1_SP", "pid1_In", "pid1_Out", "pid1_Kp",
     "pid1_Ki","pid1_Kd","pid1_DR","pid1_P","pid1_I","pid1_D","pid1_DRCurrent",
-    "pid1_NB","pid1_ATune","pid1_OS","pid1_noise","pid1_ATuneCurrent","pid1_LB","pid1_lback"  }; //,"  "," ","","pid1_Output Step","   ",
+    "pid1_NB","pid1_T_AT","pid1_OS","pid1_noise","pid1_ATuneCurrent","pid1_LB","pid1_lback"  }; //,"  "," ","","pid1_Output Step","   ",
   for(int i=0;i<names.length;i++)controlP5.controller(names[i]).setValueLabel("---");
   
   String[] names2 = {
     "pid2_AM", "pid2_Setpoint", "pid1_Input", "pid2_Output", "pid2_AMCurrent", "pid2_SP", "pid2_In", "pid2_Out", "pid2_Kp",
     "pid2_Ki","pid2_Kd","pid2_DR","pid2_P","pid2_I","pid2_D","pid2_DRCurrent",
-    "pid2_NB","pid2_ATune","pid2_OS","pid2_noise","pid2_ATuneCurrent","pid2_LB","pid2_lback"  }; //,"  "," ","","pid2_Output Step","   ",
+    "pid2_NB","pid2_T_AT","pid2_OS","pid2_noise","pid2_ATuneCurrent","pid2_LB","pid2_lback"  }; //,"  "," ","","pid2_Output Step","   ",
   for(int i=0;i<names2.length;i++)controlP5.controller(names2[i]).setValueLabel("---");
   
   
@@ -366,7 +368,7 @@ void pid2_T_DR() {
   }
 }
 
-void pid1_ATune_CMD() {
+void pid1_T_AT() {
   if(pid1_ATLabel.valueLabel().getText()=="OFF") 
   {
     pid1_ATLabel.setValue("ON");
@@ -377,7 +379,7 @@ void pid1_ATune_CMD() {
   }
 }
 
-void pid2_ATune_CMD() {
+void pid2_T_AT() {
   if(pid2_ATLabel.valueLabel().getText()=="OFF") 
   {
     pid2_ATLabel.setValue("ON");

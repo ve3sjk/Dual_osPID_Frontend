@@ -158,7 +158,7 @@ void populateTuneTab()
   pid1_oSField = controlP5.addTextfield("pid1_OS",ATLeft,ATTop,60,20);          //
   pid1_nField = controlP5.addTextfield("pid1_NB",ATLeft,ATTop+40,60,20);          //
   pid1_lbField = controlP5.addTextfield("pid1_LB",ATLeft,ATTop+80,60,20);          //
-  pid1_ATButton = controlP5.addButton("pid1_AT_CMD",0.0,ATLeft,ATTop+120,60,20);      //
+  pid1_ATButton = controlP5.addButton("pid1_T_AT",0.0,ATLeft,ATTop+120,60,20);      //
   pid1_ATLabel = controlP5.addTextlabel("pid1_ATune","OFF",ATLeft+2,ATTop+142);            //
 
   pid1_oSLabel=controlP5.addTextlabel("pid1_oStep","4",ATLeft+70,ATTop+3);                    //
@@ -171,7 +171,7 @@ void populateTuneTab()
   pid2_oSField = controlP5.addTextfield("pid2_OS",ATLeft,ATTop+180,60,20);          //
   pid2_nField = controlP5.addTextfield("pid2_NB",ATLeft,ATTop+220,60,20);          //
   pid2_lbField = controlP5.addTextfield("pid2_LB",ATLeft,ATTop+260,60,20);          //
-  pid2_ATButton = controlP5.addButton("pid2_AT_CMD",0.0,ATLeft,ATTop+300,60,20);      //
+  pid2_ATButton = controlP5.addButton("pid2_T_AT",0.0,ATLeft,ATTop+300,60,20);      //
   pid2_ATLabel = controlP5.addTextlabel("pid2_ATune","OFF",ATLeft+2,ATTop+324);            //
 
   pid2_oSLabel=controlP5.addTextlabel("pid2_oStep","7",ATLeft+70,ATTop+183);                    //
@@ -233,34 +233,41 @@ void populatePrefTab()
   PopulatePrefVals(); 
 }
 
-void populateProfileTab(){
- LBPref = controlP5.addListBox("Available Profiles",configLeft,configTop+5,160,120);
- controlP5.addTextlabel("spec4","Currently Displaying: ", configLeft+5,configTop+10+15*profs.length);
- ProfButton = controlP5.addButton("pid1_Send_Profile",0.0,configLeft,configTop+25+15*profs.length,160,20);
+void pid1_populateProfileTab(){
+ pid1_LBPref = controlP5.addListBox("pid1_Avail_Profiles",configLeft,configTop+10,160,120);
+ controlP5.addTextlabel("pid1_spec4","pid1_CurrDisp: ", configLeft,configTop*pid1_profs.length);
+ pid1_ProfButton = controlP5.addButton("pid1_Send_Profile",0.0,configLeft,configTop+30*pid1_profs.length,160,20);
 
 
- int profStatTop = configTop+490;
-  ProfCmd = controlP5.addButton("pid1_Run_Profile",0.0,configLeft,profStatTop-40,160,20);
-  ProfCmdStop = controlP5.addButton("pid1_Stop_Profile",0.0,configLeft,profStatTop-40,160,20);
-  ProfCmdStop.setVisible(false);
+ int pid1_ProfStatTop = configTop+375;
+  pid1_ProfCmd = controlP5.addButton("pid1_Run_Profile",0.0,configLeft,pid1_ProfStatTop-60,160,20);
+  pid1_ProfCmdStop = controlP5.addButton("pid1_Stop_Profile",0.0,configLeft,pid1_ProfStatTop-20,160,20);
+  pid1_ProfCmdStop.setVisible(true);
  for(int i=0;i<6;i++)
  { 
-   controlP5.addTextlabel("profstat"+i,"", configLeft, profStatTop+12*i+5);
-   controlP5.controller("profstat"+i).moveTo("Tab4");
+   controlP5.addTextlabel("pid1_profstat"+i,"", configLeft, pid1_ProfStatTop+12*i+5);
+   controlP5.controller("pid1_profstat"+i).moveTo("Tab4");
  }
- controlP5.addTextlabel("profstatus", "Status", configLeft+9, profStatTop-8);
-   controlP5.controller("profstatus").moveTo("Tab4");
+ controlP5.addTextlabel("pid1_profstatus", "pid1_Status", configLeft+9, pid1_ProfStatTop-20);
+   controlP5.controller("pid1_profstatus").moveTo("Tab4");
  
- for(int i=0;i<profs.length;i++) LBPref.addItem(profs[i].Name, i);
- profSelLabel  = controlP5.addTextlabel("spec5",profs.length==0? "N/A" : profs[0].Name, configLeft+100,configTop+10+15*profs.length); 
+ for(int i=0;i<pid1_profs.length;i++) pid1_LBPref.addItem(pid1_profs[i].Name, i);
+ pid1_profSelLabel  = controlP5.addTextlabel("pid1_spec5",pid1_profs.length==0? "N/A" : pid1_profs[0].Name, configLeft+100,configTop*pid1_profs.length); 
  
- LBPref.moveTo("Tab4");
- profSelLabel.moveTo("Tab4");
-  ProfButton.moveTo("Tab4");
-  ProfCmd.moveTo("Tab4");
-  ProfCmdStop.moveTo("Tab4");
- controlP5.controller("spec4").moveTo("Tab4");
+ pid1_LBPref.moveTo("Tab4");
+ pid1_profSelLabel.moveTo("Tab4");
+ pid1_ProfButton.moveTo("Tab4");
+ pid1_ProfCmd.moveTo("Tab4");
+ pid1_ProfCmdStop.moveTo("Tab4");
+ controlP5.controller("pid1_spec4").moveTo("Tab4");
 }
+
+
+
+
+
+
+
 
 //void addToRadioButton(RadioButton theRadioButton, String theName, int theValue ) {
 //  Toggle t = theRadioButton.addItem(theName,theValue);
